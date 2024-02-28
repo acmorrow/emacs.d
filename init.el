@@ -29,6 +29,17 @@
 
 
 ;;
+;; Get some theme in there
+;;
+(use-package solarized
+  :ensure solarized-theme
+  :pin melpa-stable
+  :defer t
+  :init
+  (load-theme 'solarized-dark t))
+
+
+;;
 ;; Remember things with recentf and savehist
 ;;
 (use-package recentf
