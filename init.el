@@ -60,15 +60,35 @@
 
 (use-package consult
   :ensure t
-  :pin melpa-stable)
+  :pin melpa-stable
+  :bind (("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ;; ("C-x p b" . consult-projectile-buffer)
+         ("M-y" . consult-yank-pop)
+         ("M-g g" . consult-goto-line)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)
+         ("M-s e" . consult-isearch-history)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)
+         ("M-r" . consult-history))
+)
 
 (use-package marginalia
   :ensure t
+  :pin melpa-stable
   :init
   (marginalia-mode))
 
 (use-package which-key
   :ensure t
+  :pin melpa-stable
   :config
   (which-key-mode))
 
