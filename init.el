@@ -20,6 +20,19 @@
   ;; Sideline custom.el
   (setq custom-file (concat user-emacs-directory "custom.el")))
 
+;;
+;; Load vertico and consult.
+;;
+(use-package vertico
+  :ensure t
+  :pin melpa-stable
+  :init
+  (vertico-mode))
+
+(use-package consult
+  :ensure t
+  :pin melpa-stable)
+
 
 ;;
 ;; Load sidelined custom.el
