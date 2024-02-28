@@ -50,7 +50,7 @@
 
 
 ;;
-;; Load vertico, consult, and which-key
+;; Load vertico, consult, marginalia and which-key
 ;;
 (use-package vertico
   :ensure t
@@ -61,6 +61,11 @@
 (use-package consult
   :ensure t
   :pin melpa-stable)
+
+(use-package marginalia
+  :ensure t
+  :init
+  (marginalia-mode))
 
 (use-package which-key
   :ensure t
