@@ -61,13 +61,20 @@
 
 
 ;;
-;; Load vertico, consult, marginalia and which-key
+;; Load MOVEC and which-key
 ;;
 (use-package vertico
   :ensure t
   :pin melpa-stable
   :init
   (vertico-mode))
+
+(use-package orderless
+  :ensure t
+  :pin melpa-stable
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package consult
   :ensure t
@@ -96,6 +103,27 @@
   :pin melpa-stable
   :init
   (marginalia-mode))
+
+(use-package embark
+  :ensure t
+  :pin melpa-stable
+  :bind
+  (("C-." . embark-act)
+   ("C->" . embark-dwim)
+   ("s-]" . embark-collect)
+   ("s-}" . embark-export)
+   ("C-h B" . embark-bindings))
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command)
+)
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :ensure t
+  :pin melpa-stable
+  :after (embark consult)
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package which-key
   :ensure t
@@ -131,6 +159,7 @@
 ;;
 (when (file-exists-p custom-file)
   (load custom-file))
+
 
 ;;
 ;; Start the server
