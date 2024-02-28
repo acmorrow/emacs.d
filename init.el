@@ -57,7 +57,7 @@
       '(search-ring regexp-search-ring)
       savehist-autosave-interval 60
       savehist-file (expand-file-name "savehist" user-emacs-directory))
-  (savehist-mode +1))
+  (savehist-mode t))
 
 
 ;;
@@ -133,7 +133,7 @@
 
 
 ;;
-;; Load magit and projectile
+;; Load magit, projectile, and diff-hl as key programming configs
 ;;
 
 (use-package magit
@@ -149,9 +149,42 @@
   :ensure t
   :pin melpa-stable
   :init
-  (projectile-mode +1)
+  (projectile-mode t)
   :bind (:map projectile-mode-map
               ("s-p" . projectile-command-map)))
+
+(use-package diff-hl
+  :ensure t
+  :pin melpa-stable
+  :after (magit)
+  :config
+  (global-diff-hl-mode t)
+  (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+
+
+;;
+;; Navigation in space and time (windows, undo, etc.)
+;;
+(use-package undo-tree
+  :ensure t
+  :pin gnu
+  :custom
+  (undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "undo-tree-history"))))
+  (undo-tree-auto-save-history t)
+  :config
+  (global-undo-tree-mode t))
+
+(use-package ace-window
+  :ensure t
+  :pin melpa-stable
+  :config
+  (global-set-key [remap other-window] 'ace-window))
+
+(use-package windmove
+  :ensure t
+  :config
+  (windmove-default-keybindings))
 
 
 ;;
