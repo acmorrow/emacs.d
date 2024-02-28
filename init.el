@@ -131,3 +131,8 @@
 ;;
 (when (file-exists-p custom-file)
   (load custom-file))
+
+;;
+;; Start the server
+;;
+(server-start)
