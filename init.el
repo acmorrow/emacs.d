@@ -40,7 +40,7 @@
 
 
 ;;
-;; Remember things with recentf and savehist
+;; Remember things with recentf, savehist, and saveplace
 ;;
 (use-package recentf
   :ensure t
@@ -58,6 +58,13 @@
       savehist-autosave-interval 60
       savehist-file (expand-file-name "savehist" user-emacs-directory))
   (savehist-mode t))
+
+(use-package saveplace
+  :ensure t
+  :config
+  (setq save-place-file (expand-file-name "saveplace" user-emacs-directory))
+  ;; activate it for all buffers
+  (setq-default save-place t))
 
 
 ;;
