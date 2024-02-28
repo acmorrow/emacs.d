@@ -24,6 +24,29 @@
   ;; Sideline custom.el
   (setq custom-file (concat user-emacs-directory "custom.el")))
 
+
+;;
+;; Remember things with recentf and savehist
+;;
+(use-package recentf
+  :ensure t
+  :config
+  (setq recentf-auto-cleanup 'never
+        recentf-max-saved-items 1000
+        recentf-save-file (expand-file-name "recentf" user-emacs-directory))
+  (recentf-mode t))
+
+(use-package savehist
+  :ensure t
+  :config
+  (setq savehist-additional-variables
+      '(search-ring regexp-search-ring)
+      savehist-autosave-interval 60
+      savehist-file (expand-file-name "savehist" user-emacs-directory))
+  (savehist-mode +1))
+
+
+
 ;;
 ;; Load vertico and consult.
 ;;
