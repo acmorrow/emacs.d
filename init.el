@@ -1,10 +1,14 @@
 ;;
-;; Top-level configuration for `package`
+;; Top-level configuration for `package` and `use-package`
 ;;
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
+
+(when (not (package-installed-p 'use-package))
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 
 ;;
