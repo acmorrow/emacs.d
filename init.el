@@ -1,11 +1,4 @@
 ;;
-;; Indispensable top level key bindings for macos
-;;
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier 'super)
-
-
-;;
 ;; Top-level configuration for `package`
 ;;
 (require 'package)
@@ -15,8 +8,21 @@
 
 
 ;;
-;; Sideline custom.el
+;; Use use-package for emacs configurations
 ;;
-(setq custom-file (concat user-emacs-directory "custom.el"))
+(use-package emacs
+  :config
+
+  ;; Indispensable top level key bindings for macos
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'super)
+
+  ;; Sideline custom.el
+  (setq custom-file (concat user-emacs-directory "custom.el")))
+
+
+;;
+;; Load sidelined custom.el
+;;
 (when (file-exists-p custom-file)
   (load custom-file))
