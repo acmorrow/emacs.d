@@ -21,6 +21,9 @@
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'super)
 
+  ;; We want this for magit
+  (global-unset-key (kbd "s-m"))
+
   ;; Sideline custom.el
   (setq custom-file (concat user-emacs-directory "custom.el")))
 
@@ -63,6 +66,29 @@
   :ensure t
   :config
   (which-key-mode))
+
+
+;;
+;; Load magit and projectile
+;;
+
+(use-package magit
+  :ensure t
+  :pin melpa-stable
+  :bind (("s-m m" . magit-status)
+	 ("s-m j" . magit-dispatch)
+	 ("s-m k" . magit-file-dispatch)
+	 ("s-m l" . magit-log-buffer)
+	 ("s-m b" . magit-blame)))
+
+(use-package projectile
+  :ensure t
+  :pin melpa-stable
+  :init
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map
+              ("s-p" . projectile-command-map)))
+
 
 ;;
 ;; Load sidelined custom.el
