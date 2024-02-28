@@ -46,9 +46,8 @@
   (savehist-mode +1))
 
 
-
 ;;
-;; Load vertico and consult.
+;; Load vertico, consult, and which-key
 ;;
 (use-package vertico
   :ensure t
@@ -60,6 +59,10 @@
   :ensure t
   :pin melpa-stable)
 
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
 
 ;;
 ;; Load sidelined custom.el
