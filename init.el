@@ -119,6 +119,10 @@
          ("M-r" . consult-history))
 )
 
+(use-package consult-dir
+  :ensure t
+  :pin melpa-stable)
+
 (use-package marginalia
   :ensure t
   :pin melpa-stable
