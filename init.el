@@ -309,6 +309,13 @@
   :config
   (volatile-highlights-mode t))
 
+(use-package anzu
+  :ensure t
+  :pin melpa-stable
+  :bind (("M-%" . anzu-query-replace)
+         ("C-M-%" . anzu-query-replace-regexp))
+  :config (global-anzu-mode 1))
+
 ;;
 ;; Programming modes, tree-sitter, LSP
 ;;
