@@ -231,10 +231,10 @@
   :ensure t
   :pin melpa-stable
   :bind (("s-m m" . magit-status)
-	 ("s-m j" . magit-dispatch)
-	 ("s-m k" . magit-file-dispatch)
-	 ("s-m l" . magit-log-buffer)
-	 ("s-m b" . magit-blame)))
+         ("s-m j" . magit-dispatch)
+         ("s-m k" . magit-file-dispatch)
+         ("s-m l" . magit-log-buffer)
+         ("s-m b" . magit-blame)))
 
 (use-package projectile
   :ensure t
