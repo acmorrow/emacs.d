@@ -4,7 +4,6 @@
 ;; wgrep
 ;; dir-locals
 ;; other existing customs
-;; consult plugins like flycheck
 ;; corfu
 
 
@@ -303,6 +302,11 @@
   ;; TODO: custom:?
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
+
+;;
+;; General editing
+;;
+
 (use-package volatile-highlights
   :ensure t
   :pin melpa-stable
@@ -315,6 +319,16 @@
   :bind (("M-%" . anzu-query-replace)
          ("C-M-%" . anzu-query-replace-regexp))
   :config (global-anzu-mode 1))
+
+(use-package whitespace
+  :ensure t
+  :init
+  (dolist (hook '(prog-mode-hook text-mode-hook))
+    (add-hook hook #'whitespace-mode))
+  (add-hook 'before-save-hook #'whitespace-cleanup)
+  :custom
+  (whitespace-line-column 80)
+  (whitespace-style '(face tabs empty trailing lines-tail)))
 
 ;;
 ;; Programming modes, tree-sitter, LSP
@@ -363,4 +377,3 @@
 ;; Start the server
 ;;
 (server-start)
-
