@@ -178,7 +178,7 @@
 
 
 ;;
-;; Load magit, projectile, and diff-hl as key programming configs
+;; Load magit, projectile, diff-hl, flycheck, etc. as key programming configs
 ;;
 
 (use-package magit
@@ -207,6 +207,16 @@
   ;; TODO hook:?
   (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+
+(use-package flycheck
+  :ensure t
+  :pin melpa-stable
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
+
+(use-package consult-flycheck
+  :ensure t
+  :pin melpa-stable)
 
 
 ;;
