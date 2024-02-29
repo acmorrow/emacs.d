@@ -15,18 +15,17 @@
 ;; Use use-package for emacs configurations
 ;;
 (use-package emacs
-  :config
-
+  :custom
   ;; Indispensable top level key bindings for macos
-  (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier 'super)
-
-  ;; We want this for magit
-  (global-unset-key (kbd "s-m"))
+  (mac-command-modifier 'meta)
+  (mac-option-modifier 'super)
 
   ;; Sideline custom.el
-  (setq custom-file (concat user-emacs-directory "custom.el")))
+  (custom-file (concat user-emacs-directory "custom.el"))
 
+  :config
+  ;; We want this for magit
+  (global-unset-key (kbd "s-m")))
 
 ;;
 ;; Get some theme in there
@@ -44,26 +43,27 @@
 ;;
 (use-package recentf
   :ensure t
+  :custom
+  (recentf-auto-cleanup 'never)
+  (recentf-max-saved-items 1000)
+  (recentf-save-file (expand-file-name "recentf" user-emacs-directory))
   :config
-  (setq recentf-auto-cleanup 'never
-        recentf-max-saved-items 1000
-        recentf-save-file (expand-file-name "recentf" user-emacs-directory))
   (recentf-mode t))
 
 (use-package savehist
   :ensure t
+  :custom
+  (savehist-additional-variables '(search-ring regexp-search-ring))
+  (savehist-autosave-interval 60)
+  (savehist-file (expand-file-name "savehist" user-emacs-directory))
   :config
-  (setq savehist-additional-variables
-      '(search-ring regexp-search-ring)
-      savehist-autosave-interval 60
-      savehist-file (expand-file-name "savehist" user-emacs-directory))
   (savehist-mode t))
 
 (use-package saveplace
   :ensure t
+  :custom
+  (save-place-file (expand-file-name "saveplace" user-emacs-directory))
   :config
-  (setq save-place-file (expand-file-name "saveplace" user-emacs-directory))
-  ;; activate it for all buffers
   (setq-default save-place t))
 
 
@@ -114,14 +114,14 @@
 (use-package embark
   :ensure t
   :pin melpa-stable
+  :custom
+  (prefix-help-command #'embark-prefix-help-command)
   :bind
   (("C-." . embark-act)
    ("C->" . embark-dwim)
    ("s-]" . embark-collect)
    ("s-}" . embark-export)
    ("C-h B" . embark-bindings))
-  :init
-  (setq prefix-help-command #'embark-prefix-help-command)
 )
 
 ;; Consult users will also want the embark-consult package.
@@ -166,6 +166,7 @@
   :after (magit)
   :config
   (global-diff-hl-mode t)
+  ;; TODO hook:?
   (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
@@ -186,6 +187,7 @@
   :ensure t
   :pin melpa-stable
   :config
+  ;; TODO bind:?
   (global-set-key [remap other-window] 'ace-window))
 
 (use-package windmove
@@ -203,6 +205,7 @@
   :custom
   (tramp-default-method "ssh")
   :config
+  ;; TODO: custom:?
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 
@@ -221,15 +224,13 @@
 (use-package lsp-mode
   :ensure t
   :pin melpa-stable
-  :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "s-l")
+  :custom
+  (lsp-keymap-prefix "s-l")
   :hook ((c-mode . lsp)
 	 (go-mode . lsp)
 	 (c++-mode . lsp)
 	 (rust-mode . lsp)
 	 (python-mode . lsp)
-         ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
