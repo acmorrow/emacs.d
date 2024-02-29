@@ -303,6 +303,11 @@
   ;; TODO: custom:?
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
+(use-package volatile-highlights
+  :ensure t
+  :pin melpa-stable
+  :config
+  (volatile-highlights-mode t))
 
 ;;
 ;; Programming modes, tree-sitter, LSP
