@@ -9,17 +9,25 @@
 
 
 ;;
-;; Top-level configuration for `package` and `use-package`
+;; Top-level configuration for `package`, `use-package`, and `auto-compile`
 ;;
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
 
-(when (not (package-installed-p 'use-package))
+(unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+(require 'use-package)
 
+(use-package auto-compile
+  :ensure t
+  :pin melpa-stable
+  :config
+  (auto-compile-on-load-mode))
 
 ;;
 ;; Use use-package for emacs configurations
@@ -35,6 +43,9 @@
 
   ;; Make `TAB` smarter
   (tab-always-indent 'complete)
+
+  ;; Always prefer newer bytecode
+  (load-prefer-newer t)
 
   :config
   ;; We want this for magit
