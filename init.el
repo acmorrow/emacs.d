@@ -85,9 +85,9 @@
   (blink-cursor-mode -1)
 
   ;; Include more metadata in the modeline
-  (line-number-mode t)
-  (column-number-mode t)
-  (size-indication-mode t)
+  (line-number-mode +1)
+  (column-number-mode +1)
+  (size-indication-mode +1)
 
   ;; We want this for magit
   (global-unset-key (kbd "s-m"))
@@ -99,10 +99,10 @@
   (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
   ;; Delete the selection on any keypress
-  (delete-selection-mode t)
+  (delete-selection-mode +1)
 
   ;; If files change outside emacs, automatically reload them
-  (global-auto-revert-mode t)
+  (global-auto-revert-mode +1)
 
   ;; Inconsolata-16 as the default
   ;; TODO: Can this go into the `solarized` use-pacakge below?
@@ -129,7 +129,7 @@
   (recentf-max-saved-items 1000)
   (recentf-save-file (expand-file-name "recentf" user-emacs-directory))
   :config
-  (recentf-mode t))
+  (recentf-mode +1))
 
 (use-package savehist
   :ensure t
@@ -138,14 +138,14 @@
   (savehist-autosave-interval 60)
   (savehist-file (expand-file-name "savehist" user-emacs-directory))
   :config
-  (savehist-mode t))
+  (savehist-mode +1))
 
 (use-package saveplace
   :ensure t
   :custom
   (save-place-file (expand-file-name "saveplace" user-emacs-directory))
   :config
-  (setq-default save-place t))
+  (save-place-mode +1))
 
 
 ;;
@@ -155,7 +155,7 @@
   :ensure t
   :pin melpa-stable
   :init
-  (vertico-mode))
+  (vertico-mode +1))
 
 (use-package orderless
   :ensure t
@@ -196,7 +196,7 @@
   :ensure t
   :pin melpa-stable
   :init
-  (marginalia-mode))
+  (marginalia-mode +1))
 
 (use-package embark
   :ensure t
@@ -223,7 +223,7 @@
   :ensure t
   :pin melpa-stable
   :config
-  (which-key-mode))
+  (which-key-mode +1))
 
 
 ;;
@@ -263,7 +263,7 @@
   :ensure t
   :pin melpa-stable
   :init
-  (projectile-mode t)
+  (projectile-mode +1)
   :bind (:map projectile-mode-map
               ("s-p" . projectile-command-map)))
 
@@ -272,7 +272,7 @@
   :pin melpa-stable
   :after (magit)
   :config
-  (global-diff-hl-mode t)
+  (global-diff-hl-mode +1)
   ;; TODO hook:?
   (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
@@ -304,7 +304,7 @@
   (undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "undo-tree-history"))))
   (undo-tree-auto-save-history t)
   :config
-  (global-undo-tree-mode t))
+  (global-undo-tree-mode +1))
 
 (use-package ace-window
   :ensure t
@@ -343,14 +343,16 @@
   :ensure t
   :pin melpa-stable
   :config
-  (volatile-highlights-mode t))
+  (volatile-highlights-mode +1))
 
 (use-package anzu
   :ensure t
   :pin melpa-stable
-  :bind (("M-%" . anzu-query-replace)
-         ("C-M-%" . anzu-query-replace-regexp))
-  :config (global-anzu-mode 1))
+  :bind
+  (("M-%" . anzu-query-replace)
+   ("C-M-%" . anzu-query-replace-regexp))
+  :config
+  (global-anzu-mode +1))
 
 (use-package whitespace
   :ensure t
