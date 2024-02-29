@@ -1,7 +1,6 @@
 ;; TODOs
 ;; treesitter
 ;; tramp (-container?)
-;; wgrep
 ;; dir-locals
 ;; other existing customs
 ;; corfu
