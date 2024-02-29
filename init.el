@@ -249,3 +249,12 @@
 ;; Start the server
 ;;
 (server-start)
+
+;; TODOs
+;; default font to inconsolaata
+;; tramp (-container?)
+;; wgrep
+;; dir-locals
+;; other existing customs
+;; consult plugins like flycheck
+;; corfu
