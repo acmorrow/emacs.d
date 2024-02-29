@@ -44,15 +44,45 @@
   ;; Sideline custom.el
   (custom-file (concat user-emacs-directory "custom.el"))
 
+  ;; No need for the startup screen
+  (inhibit-startup-screen t)
+
   ;; Make `TAB` smarter
   (tab-always-indent 'complete)
 
-  ;; Always prefer newer bytecode
-  (load-prefer-newer t)
+  ;; Bell-ring is annoying
+  (ring-bell-function 'ignore)
+
+  ;; Always add a trailing newline to files
+  (require-final-newline t)
 
   :config
+  ;; Toolbar is a waste of space
+  (when (fboundp 'tool-bar-mode)
+    (tool-bar-mode 0))
+
+  ;; Blinking cursor is silly
+  (blink-cursor-mode -1)
+
+  ;; Include more metadata in the modeline
+  (line-number-mode t)
+  (column-number-mode t)
+  (size-indication-mode t)
+
   ;; We want this for magit
   (global-unset-key (kbd "s-m"))
+
+  ;; Don't require typing out `yes` or `no`; accept `y` or `n`.
+  (fset 'yes-or-no-p 'y-or-n-p)
+
+  ;; Always start the initial frame large
+  (add-to-list 'initial-frame-alist '(fullscreen . maximized))
+
+  ;; Delete the selection on any keypress
+  (delete-selection-mode t)
+
+  ;; If files change outside emacs, automatically reload them
+  (global-auto-revert-mode t)
 
   ;; Inconsolata-16 as the default
   ;; TODO: Can this go into the `solarized` use-pacakge below?
