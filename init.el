@@ -357,12 +357,12 @@
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(orderless))) ;; Configure orderless
   :hook ((c-mode . lsp)
-	 (go-mode . lsp)
-	 (c++-mode . lsp)
-	 (rust-mode . lsp)
-	 (python-mode . lsp)
+         (go-mode . lsp)
+         (c++-mode . lsp)
+         (rust-mode . lsp)
+         (python-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration)
-	 (lsp-completion-mode . my/lsp-mode-setup-completion))
+         (lsp-completion-mode . my/lsp-mode-setup-completion))
   :commands lsp)
 
 (use-package lsp-ui
