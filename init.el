@@ -1,3 +1,14 @@
+;; TODOs
+;; treesitter
+;; default font to inconsolaata
+;; tramp (-container?)
+;; wgrep
+;; dir-locals
+;; other existing customs
+;; consult plugins like flycheck
+;; corfu
+
+
 ;;
 ;; Top-level configuration for `package` and `use-package`
 ;;
@@ -212,14 +223,14 @@
 ;;
 ;; Programming modes, tree-sitter, LSP
 ;;
-(use-package treesit-auto
-  :ensure t
-  :pin melpa-stable
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
+;; (use-package treesit-auto
+;;   :ensure t
+;;   :pin melpa-stable
+;;   :custom
+;;   (treesit-auto-install 'prompt)
+;;   :config
+;;   (treesit-auto-add-to-auto-mode-alist 'all)
+;;   (global-treesit-auto-mode))
 
 (use-package lsp-mode
   :ensure t
@@ -251,11 +262,3 @@
 ;;
 (server-start)
 
-;; TODOs
-;; default font to inconsolaata
-;; tramp (-container?)
-;; wgrep
-;; dir-locals
-;; other existing customs
-;; consult plugins like flycheck
-;; corfu
