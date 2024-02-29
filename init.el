@@ -2,7 +2,6 @@
 ;; treesitter
 ;; tramp (-container?)
 ;; dir-locals
-;; other existing customs
 ;; corfu
 
 
@@ -166,7 +165,9 @@
 
 (use-package consult-dir
   :ensure t
-  :pin melpa-stable)
+  :pin melpa-stable
+  :custom
+  (consult-dir-project-list-function 'consult-dir-projectile-dirs))
 
 (use-package marginalia
   :ensure t
@@ -223,7 +224,7 @@
 
 
 ;;
-;; Load magit, projectile, diff-hl, flycheck, etc. as key programming configs
+;; Load magit, projectile, diff-hl, flycheck, etc., compile as key programming configs
 ;;
 
 (use-package magit
@@ -264,6 +265,12 @@
   :pin melpa-stable)
 
 
+(use-package compile
+  :ensure t
+  :custom
+  (compilation-max-output-line-length nil)
+  (compilation-skip-threshold 0))
+
 ;;
 ;; Navigation in space and time (tramp, windows, undo, etc.)
 ;;
@@ -297,6 +304,9 @@
   :ensure t
   :custom
   (tramp-default-method "ssh")
+  (tramp-show-ad-hoc-proxies t)
+  (enable-remote-dir-locals t)
+  (tramp-use-ssh-controlmaster-options nil)
   :config
   ;; TODO: custom:?
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
@@ -326,7 +336,7 @@
     (add-hook hook #'whitespace-mode))
   (add-hook 'before-save-hook #'whitespace-cleanup)
   :custom
-  (whitespace-line-column 80)
+  (whitespace-line-column nil)
   (whitespace-style '(face tabs empty trailing lines-tail)))
 
 (use-package wgrep
