@@ -330,6 +330,10 @@
   (whitespace-line-column 80)
   (whitespace-style '(face tabs empty trailing lines-tail)))
 
+(use-package wgrep
+  :ensure t
+  :pin melpa-stable)
+
 ;;
 ;; Programming modes, tree-sitter, LSP
 ;;
