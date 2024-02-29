@@ -1,8 +1,6 @@
 ;; TODOs
-;; treesitter
-;; tramp (-container?)
-;; dir-locals
-;; corfu
+;; - tramp (-container?) and consult(-dir?) integration
+;; - dir-locals - not in this file somehow
 
 
 ;;
@@ -29,6 +27,7 @@
   :config
   (auto-compile-on-load-mode))
 
+
 ;;
 ;; Use use-package for emacs configurations
 ;;
@@ -52,6 +51,30 @@
 
   ;; Always add a trailing newline to files
   (require-final-newline t)
+
+  ;; Teach treesit where to get the relevant modules
+  (treesit-language-source-alist
+   '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+     (c "https://github.com/tree-sitter/tree-sitter-c")
+     (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+     (go "https://github.com/tree-sitter/tree-sitter-go")
+     (html "https://github.com/tree-sitter/tree-sitter-html")
+     (json "https://github.com/tree-sitter/tree-sitter-json")
+     (python "https://github.com/tree-sitter/tree-sitter-python")
+     (rust "https://github.com/tree-sitter/tree-sitter-rust")
+     (toml "https://github.com/tree-sitter/tree-sitter-toml")))
+
+  (major-mode-remap-alist
+   '((bash-mode . bash-ts-mode)
+     (c-mode . c-ts-mode)
+     (c++-mode . c++-ts-mode)
+     (c-or-c++-mode . c-or-c++-ts-mode)
+     (go-mode . go-ts-mode)
+     (html-mode . html-ts-mode)
+     (json-mode . json-ts-mode)
+     (python-mode . python-ts-mode)
+     (rust-mode . rust-ts-mode)
+     (toml-mode . toml-ts-mode)))
 
   :config
   ;; Toolbar is a waste of space
@@ -343,21 +366,14 @@
   :ensure t
   :pin melpa-stable)
 
+
 ;;
 ;; Programming modes, tree-sitter, LSP
 ;;
-;; (use-package treesit-auto
-;;   :ensure t
-;;   :pin melpa-stable
-;;   :custom
-;;   (treesit-auto-install 'prompt)
-;;   :config
-;;   (treesit-auto-add-to-auto-mode-alist 'all)
-;;   (global-treesit-auto-mode))
 
 (use-package lsp-mode
   :ensure t
-  :pin melpa-stable
+  ;; :pin melpa-stable
   :custom
   (lsp-keymap-prefix "s-l")
   (lsp-completion-provider :none) ;; Corfu!
@@ -365,11 +381,18 @@
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(orderless))) ;; Configure orderless
-  :hook ((c-mode . lsp)
-         (go-mode . lsp)
-         (c++-mode . lsp)
-         (rust-mode . lsp)
-         (python-mode . lsp)
+  :hook ((c-mode . lsp-deferred)
+         (c-ts-mode . lsp-deferred)
+         (c-or-c++-mode . lsp-deferred)
+         (c-or-c++-ts-mode . lsp-deferred)
+         (go-mode . lsp-deferred)
+         (go-ts.mode . lsp-deferred)
+         (c++-mode . lsp-deferred)
+         (c++-ts-mode . lsp-deferred)
+         (rust-mode . lsp-deferred)
+         (rust-ts-mode . lsp-deferred)
+         (python-mode . lsp-deferred)
+         (python-ts-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration)
          (lsp-completion-mode . my/lsp-mode-setup-completion))
   :commands lsp)
@@ -378,6 +401,7 @@
   :ensure t
   :pin melpa-stable
   :commands lsp-ui-mode)
+
 
 ;;
 ;; Load sidelined custom.el
