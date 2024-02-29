@@ -409,7 +409,7 @@
 
 (use-package lsp-ui
   :ensure t
-  :pin melpa-stable
+  ;; :pin melpa-stable
   :commands lsp-ui-mode)
 
 
