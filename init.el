@@ -205,6 +205,39 @@
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
+
+;;
+;; Programming modes, tree-sitter, LSP
+;;
+(use-package treesit-auto
+  :ensure t
+  :pin melpa-stable
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
+(use-package lsp-mode
+  :ensure t
+  :pin melpa-stable
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "s-l")
+  :hook ((c-mode . lsp)
+	 (go-mode . lsp)
+	 (c++-mode . lsp)
+	 (rust-mode . lsp)
+	 (python-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+(use-package lsp-ui
+  :ensure t
+  :pin melpa-stable
+  :commands lsp-ui-mode)
+
 ;;
 ;; Load sidelined custom.el
 ;;
