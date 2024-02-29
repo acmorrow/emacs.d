@@ -26,6 +26,9 @@
 (use-package auto-compile
   :ensure t
   :pin melpa-stable
+  :custom
+  ;; Always prefer newer bytecode
+  (load-prefer-newer t)
   :config
   (auto-compile-on-load-mode))
 
