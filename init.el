@@ -1,6 +1,5 @@
 ;; TODOs
 ;; treesitter
-;; default font to inconsolaata
 ;; tramp (-container?)
 ;; wgrep
 ;; dir-locals
@@ -39,7 +38,11 @@
 
   :config
   ;; We want this for magit
-  (global-unset-key (kbd "s-m")))
+  (global-unset-key (kbd "s-m"))
+
+  ;; Inconsolata-16 as the default
+  ;; TODO: Can this go into the `solarized` use-pacakge below?
+  (add-to-list 'default-frame-alist '(font . "Inconsolata-16")))
 
 ;;
 ;; Get some theme in there
