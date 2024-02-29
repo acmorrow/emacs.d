@@ -171,7 +171,7 @@
 
 
 ;;
-;; Navigation in space and time (windows, undo, etc.)
+;; Navigation in space and time (tramp, windows, undo, etc.)
 ;;
 (use-package undo-tree
   :ensure t
@@ -193,6 +193,17 @@
   :config
   (windmove-default-keybindings))
 
+(use-package uniquify
+  :config
+  (setq uniquify-buffer-name-style 'post-forward)
+  (setq uniquify-separator "|"))
+
+(use-package tramp
+  :ensure t
+  :custom
+  (tramp-default-method "ssh")
+  :config
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 ;;
 ;; Load sidelined custom.el
