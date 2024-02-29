@@ -34,6 +34,9 @@
   ;; Sideline custom.el
   (custom-file (concat user-emacs-directory "custom.el"))
 
+  ;; Make `TAB` smarter
+  (tab-always-indent 'complete)
+
   :config
   ;; We want this for magit
   (global-unset-key (kbd "s-m")))
@@ -151,6 +154,26 @@
 
 
 ;;
+;; Completion - Let's Try Corfu
+;;
+(use-package corfu
+  :ensure t
+  :pin melpa-stable
+  :custom
+  (corfu-auto t)
+  :init
+  (global-corfu-mode)
+  :bind
+  (:map corfu-map
+        ("C-n" . corfu-next)
+        ("<escape>" . corfu-reset)
+        ("C-g" . corfu-quit)
+        ("s-SPC" . corfu-insert-separator)
+        ("C-p" . corfu-previous)
+        ))
+
+
+;;
 ;; Load magit, projectile, and diff-hl as key programming configs
 ;;
 
@@ -237,12 +260,18 @@
   :pin melpa-stable
   :custom
   (lsp-keymap-prefix "s-l")
+  (lsp-completion-provider :none) ;; Corfu!
+  :init
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless))) ;; Configure orderless
   :hook ((c-mode . lsp)
 	 (go-mode . lsp)
 	 (c++-mode . lsp)
 	 (rust-mode . lsp)
 	 (python-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
+         (lsp-mode . lsp-enable-which-key-integration)
+	 (lsp-completion-mode . my/lsp-mode-setup-completion))
   :commands lsp)
 
 (use-package lsp-ui
