@@ -4,6 +4,7 @@
 ;; - backup and temp files
 ;; - cape?
 ;; - supersave
+;; - flyspell
 
 
 ;;
