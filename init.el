@@ -135,6 +135,19 @@
   (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
+(use-package hl-line
+  :ensure t
+  :config
+  (global-hl-line-mode +1))
+
+(use-package uniquify
+  :config
+  (setq uniquify-buffer-name-style 'post-forward)
+  (setq uniquify-separator "|"))
+
+(use-package diminish
+  :ensure t
+  :pin melpa-stable)
 
 ;;
 ;; Remember things with recentf, savehist, and saveplace
@@ -344,11 +357,6 @@
   :ensure t
   :config
   (windmove-default-keybindings))
-
-(use-package uniquify
-  :config
-  (setq uniquify-buffer-name-style 'post-forward)
-  (setq uniquify-separator "|"))
 
 (use-package tramp
   :ensure t
