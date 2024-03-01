@@ -1,7 +1,8 @@
 ;; TODOs
 ;; - tramp (-container?) and consult(-dir?) integration
 ;; - dir-locals - not in this file somehow
-
+;; - backup and temp files
+;; - smart parens
 
 ;;
 ;; Top-level configuration for `package`, `use-package`, and `auto-compile`
