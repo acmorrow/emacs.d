@@ -5,6 +5,7 @@
 ;; - cape?
 ;; - supersave
 
+
 ;;
 ;; Top-level configuration for `package`, `use-package`, and `auto-compile`
 ;;
@@ -231,7 +232,6 @@
    ("C-h B" . embark-bindings))
 )
 
-;; Consult users will also want the embark-consult package.
 (use-package embark-consult
   :ensure t
   :pin melpa-stable
@@ -274,10 +274,10 @@
   (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode))
 
+
 ;;
 ;; Load magit, projectile, diff-hl, flycheck, etc., compile as key programming configs
 ;;
-
 (use-package magit
   :ensure t
   :pin melpa-stable
@@ -365,7 +365,6 @@
 ;;
 ;; General editing
 ;;
-
 (use-package volatile-highlights
   :ensure t
   :pin melpa-stable
@@ -399,7 +398,6 @@
 ;;
 ;; Programming modes, tree-sitter, LSP
 ;;
-
 (use-package lsp-mode
   :ensure t
   ;; :pin melpa-stable
