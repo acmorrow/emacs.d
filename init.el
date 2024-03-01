@@ -168,10 +168,14 @@
 (use-package consult
   :ensure t
   :pin melpa-stable
+  :after (projectile)
+  :custom
+  (consult-narrow-key "<")
+  (consult-project-function (lambda (_) (projectile-project-root)))
   :bind (("C-x b" . consult-buffer)
          ("C-x 4 b" . consult-buffer-other-window)
          ("C-x 5 b" . consult-buffer-other-frame)
-         ;; ("C-x p b" . consult-projectile-buffer)
+         ("C-x p b" . consult-project-buffer)
          ("M-y" . consult-yank-pop)
          ("M-g g" . consult-goto-line)
          ;; Isearch integration
@@ -294,7 +298,9 @@
 
 (use-package consult-flycheck
   :ensure t
-  :pin melpa-stable)
+  :pin melpa-stable
+  :after (consult)
+)
 
 
 (use-package compile
