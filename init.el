@@ -3,7 +3,6 @@
 ;; - dir-locals - not in this file somehow
 ;; - backup and temp files
 ;; - cape?
-;; - nlinum
 ;; - supersave
 
 ;;
@@ -107,12 +106,16 @@
   ;; If files change outside emacs, automatically reload them
   (global-auto-revert-mode +1)
 
+  ;; global line numbers
+  (global-display-line-numbers-mode +1)
+
   ;; Inconsolata-16 as the default
   ;; TODO: Can this go into the `solarized` use-pacakge below?
   (add-to-list 'default-frame-alist '(font . "Inconsolata-16")))
 
+
 ;;
-;; Get some theme in there
+;; Get some theme in there, and other UI stuff
 ;;
 (use-package solarized
   :ensure solarized-theme
@@ -120,6 +123,16 @@
   :defer t
   :init
   (load-theme 'solarized-dark t))
+
+(use-package diff-hl
+  :ensure t
+  :pin melpa-stable
+  :after (magit)
+  :config
+  (global-diff-hl-mode +1)
+  ;; TODO hook:?
+  (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 
 ;;
@@ -281,16 +294,6 @@
   (projectile-mode +1)
   :bind (:map projectile-mode-map
               ("s-p" . projectile-command-map)))
-
-(use-package diff-hl
-  :ensure t
-  :pin melpa-stable
-  :after (magit)
-  :config
-  (global-diff-hl-mode +1)
-  ;; TODO hook:?
-  (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 (use-package flycheck
   :ensure t
