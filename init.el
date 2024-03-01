@@ -2,7 +2,9 @@
 ;; - tramp (-container?) and consult(-dir?) integration
 ;; - dir-locals - not in this file somehow
 ;; - backup and temp files
-;; - smart parens
+;; - cape?
+;; - nlinum
+;; - supersave
 
 ;;
 ;; Top-level configuration for `package`, `use-package`, and `auto-compile`
@@ -302,12 +304,19 @@
   :after (consult)
 )
 
-
 (use-package compile
   :ensure t
   :custom
   (compilation-max-output-line-length nil)
   (compilation-skip-threshold 0))
+
+(use-package smartparens-mode
+  :ensure smartparens
+  :pin melpa-stable
+  :hook (prog-mode text-mode markdown-mode)
+  :config
+  (require 'smartparens-config))
+
 
 ;;
 ;; Navigation in space and time (tramp, windows, undo, etc.)
