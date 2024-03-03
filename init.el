@@ -374,6 +374,12 @@
 ;;
 ;; General editing
 ;;
+(use-package guru-mode
+  :ensure t
+  :pin melpa-stable
+  :config
+  (guru-mode +1))
+
 (use-package volatile-highlights
   :ensure t
   :pin melpa-stable
