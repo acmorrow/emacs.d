@@ -5,7 +5,6 @@
 ;; - cape?
 ;; - supersave
 ;; - flyspell
-;; - diff-hl mode doesn't seem to be applied
 ;; - C-a C-a beginning of line beginning of statement fix
 
 ;;
@@ -130,12 +129,11 @@
 (use-package diff-hl
   :ensure t
   :pin melpa-stable
-  :after (magit)
-  :config
-  (global-diff-hl-mode +1)
-  ;; TODO hook:?
-  (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+  :hook ((dired-mode . diff-hl-dired-mode)
+         (magit-pre-refresh . diff-hl-magit-pre-refresh)
+         (magit-post-refresh . diff-hl-magit-post-refresh))
+  :init
+  (global-diff-hl-mode +1))
 
 (use-package hl-line
   :ensure t
@@ -151,6 +149,7 @@
 (use-package diminish
   :ensure t
   :pin melpa-stable)
+
 
 ;;
 ;; Remember things with recentf, savehist, and saveplace
@@ -342,6 +341,7 @@
 (use-package eldoc
   :ensure t
   :diminish eldoc-mode)
+
 
 ;;
 ;; Navigation in space and time (tramp, windows, undo, etc.)
