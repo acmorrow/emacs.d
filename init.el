@@ -4,7 +4,6 @@
 ;; - backup and temp files
 ;; - cape?
 ;; - supersave
-;; - flyspell
 ;; - C-a C-a beginning of line beginning of statement fix
 
 ;;
@@ -292,6 +291,13 @@
   :diminish
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
+
+(use-package flyspell
+  :ensure t
+  :pin melpa-stable
+  :diminish
+  :hook ((prog-mode . flyspell-prog-mode)
+         (text-mode . flyspell-mode)))
 
 (use-package consult-flycheck
   :ensure t
