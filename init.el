@@ -378,7 +378,7 @@
   :ensure t
   :pin melpa-stable
   :config
-  (guru-mode +1))
+  (guru-global-mode +1))
 
 (use-package volatile-highlights
   :ensure t
