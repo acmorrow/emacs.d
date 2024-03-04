@@ -258,6 +258,7 @@
 (use-package which-key
   :ensure t
   :pin melpa-stable
+  :diminish
   :config
   (which-key-mode +1))
 
@@ -314,6 +315,7 @@
 (use-package flycheck
   :ensure t
   :pin melpa-stable
+  :diminish
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
@@ -329,13 +331,17 @@
   (compilation-max-output-line-length nil)
   (compilation-skip-threshold 0))
 
-(use-package smartparens-mode
-  :ensure smartparens
+(use-package smartparens
+  :ensure t
   :pin melpa-stable
+  :diminish smartparens-mode
   :hook (prog-mode text-mode markdown-mode)
   :config
   (require 'smartparens-config))
 
+(use-package eldoc
+  :ensure t
+  :diminish eldoc-mode)
 
 ;;
 ;; Navigation in space and time (tramp, windows, undo, etc.)
@@ -343,6 +349,7 @@
 (use-package undo-tree
   :ensure t
   :pin gnu
+  :diminish
   :custom
   (undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "undo-tree-history"))))
   (undo-tree-auto-save-history t)
@@ -379,18 +386,21 @@
 (use-package guru-mode
   :ensure t
   :pin melpa-stable
+  :diminish
   :config
   (guru-global-mode +1))
 
 (use-package volatile-highlights
   :ensure t
   :pin melpa-stable
+  :diminish
   :config
   (volatile-highlights-mode +1))
 
 (use-package anzu
   :ensure t
   :pin melpa-stable
+  :diminish
   :bind
   (("M-%" . anzu-query-replace)
    ("C-M-%" . anzu-query-replace-regexp))
@@ -399,6 +409,7 @@
 
 (use-package whitespace
   :ensure t
+  :diminish
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))
     (add-hook hook #'whitespace-mode))
