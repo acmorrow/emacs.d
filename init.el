@@ -5,7 +5,8 @@
 ;; - cape?
 ;; - supersave
 ;; - flyspell
-
+;; - diff-hl mode doesn't seem to be applied
+;; - C-a C-a beginning of line beginning of statement fix
 
 ;;
 ;; Top-level configuration for `package`, `use-package`, and `auto-compile`
@@ -143,6 +144,7 @@
 
 (use-package uniquify
   :config
+  ;; TODO: Use :custom here
   (setq uniquify-buffer-name-style 'post-forward)
   (setq uniquify-separator "|"))
 
