@@ -56,30 +56,6 @@
   ;; Always add a trailing newline to files
   (require-final-newline t)
 
-  ;; Teach treesit where to get the relevant modules
-  (treesit-language-source-alist
-   '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-     (c "https://github.com/tree-sitter/tree-sitter-c")
-     (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-     (go "https://github.com/tree-sitter/tree-sitter-go")
-     (html "https://github.com/tree-sitter/tree-sitter-html")
-     (json "https://github.com/tree-sitter/tree-sitter-json")
-     (python "https://github.com/tree-sitter/tree-sitter-python")
-     (rust "https://github.com/tree-sitter/tree-sitter-rust")
-     (toml "https://github.com/tree-sitter/tree-sitter-toml")))
-
-  (major-mode-remap-alist
-   '((bash-mode . bash-ts-mode)
-     (c-mode . c-ts-mode)
-     (c++-mode . c++-ts-mode)
-     (c-or-c++-mode . c-or-c++-ts-mode)
-     (go-mode . go-ts-mode)
-     (html-mode . html-ts-mode)
-     (json-mode . json-ts-mode)
-     (python-mode . python-ts-mode)
-     (rust-mode . rust-ts-mode)
-     (toml-mode . toml-ts-mode)))
-
   :config
   ;; Toolbar is a waste of space
   (when (fboundp 'tool-bar-mode)
@@ -424,6 +400,15 @@
 ;;
 ;; Programming modes, tree-sitter, LSP
 ;;
+(use-package treesit-auto
+  :ensure t
+  :pin melpa-stable
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
 (use-package lsp-mode
   :ensure t
   ;; :pin melpa-stable
