@@ -141,10 +141,9 @@
   (global-hl-line-mode +1))
 
 (use-package uniquify
-  :config
-  ;; TODO: Use :custom here
-  (setq uniquify-buffer-name-style 'post-forward)
-  (setq uniquify-separator "|"))
+  :custom
+  (uniquify-buffer-name-style 'post-forward)
+  (uniquify-separator "|"))
 
 (use-package diminish
   :ensure t
@@ -360,8 +359,8 @@
   :ensure t
   :pin melpa-stable
   :config
-  ;; TODO bind:?
-  (global-set-key [remap other-window] 'ace-window))
+  :bind
+  ([remap other-window] . ace-window))
 
 (use-package windmove
   :ensure t
@@ -376,7 +375,6 @@
   (enable-remote-dir-locals t)
   (tramp-use-ssh-controlmaster-options nil)
   :config
-  ;; TODO: custom:?
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 
