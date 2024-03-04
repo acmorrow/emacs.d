@@ -455,11 +455,10 @@
   ;; :pin melpa-stable
   :commands lsp-ui-mode)
 
+
 ;;
 ;; Other configuration
 ;;
-
-;; For reading Mastering Emacs
 (use-package ereader
   :ensure t
   :pin melpa)
