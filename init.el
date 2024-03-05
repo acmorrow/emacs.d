@@ -25,9 +25,8 @@
   :ensure t
   :pin melpa-stable
   :custom
-  ;; Always prefer newer bytecode
-  (load-prefer-newer t)
   :config
+  (set load-prefer-newer t)
   (auto-compile-on-load-mode))
 
 
@@ -211,14 +210,14 @@
 (use-package embark
   :ensure t
   :pin melpa-stable
-  :custom
-  (prefix-help-command #'embark-prefix-help-command)
   :bind
   (("C-." . embark-act)
    ("C->" . embark-dwim)
    ("s-]" . embark-collect)
    ("s-}" . embark-export)
    ("C-h B" . embark-bindings))
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command))
 )
 
 (use-package embark-consult
