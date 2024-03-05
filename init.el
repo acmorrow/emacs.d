@@ -1,7 +1,6 @@
 ;; TODOs
 ;; - tramp (-container?) and consult(-dir?) integration
 ;; - dir-locals - not in this file somehow
-;; - backup and temp files
 ;; - cape?
 ;; - supersave
 ;; - C-a C-a beginning of line beginning of statement fix
@@ -54,6 +53,9 @@
 
   ;; Always add a trailing newline to files
   (require-final-newline t)
+
+  ;; Keep backup files in temp
+  (backup-directory-alist '((".*" . ,temporary-file-directory)))
 
   :config
   ;; Toolbar is a waste of space
