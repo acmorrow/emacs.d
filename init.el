@@ -24,9 +24,10 @@
 (use-package auto-compile
   :ensure t
   :pin melpa-stable
-  :custom
+  :demand
+  :init
+  (setq load-prefer-newer t)
   :config
-  (set load-prefer-newer t)
   (auto-compile-on-load-mode))
 
 
@@ -218,7 +219,6 @@
    ("C-h B" . embark-bindings))
   :init
   (setq prefix-help-command #'embark-prefix-help-command))
-)
 
 (use-package embark-consult
   :ensure t
