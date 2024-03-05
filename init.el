@@ -406,12 +406,13 @@
   :ensure t
   :diminish
   :init
-  (dolist (hook '(prog-mode-hook text-mode-hook))
-    (add-hook hook #'whitespace-mode))
+  ;; TODO: Why doesn't this seem to work when done with :hook before-save?
   (add-hook 'before-save-hook #'whitespace-cleanup)
+  :hook
+  ((prog-mode text-mode) . whitespace-mode)
   :custom
   (whitespace-line-column nil)
-  (whitespace-style '(face tabs empty trailing lines-tail)))
+  (whitespace-style '(face tabs empty trailing)))
 
 (use-package wgrep
   :ensure t
