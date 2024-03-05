@@ -291,6 +291,12 @@
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
+(use-package consult-flycheck
+  :ensure t
+  :pin melpa-stable
+  :after (consult)
+)
+
 (use-package flyspell
   :ensure t
   :pin melpa-stable
@@ -298,11 +304,19 @@
   :hook ((prog-mode . flyspell-prog-mode)
          (text-mode . flyspell-mode)))
 
-(use-package consult-flycheck
+(use-package flyspell-correct
   :ensure t
   :pin melpa-stable
+  :after flyspell
+  :defer t)
+
+(use-package consult-flyspell
+  :ensure t
   :after (consult)
-)
+  :config
+  (setq consult-flyspell-select-function (lambda () (flyspell-correct-at-point) (consult-flyspell))
+        consult-flyspell-set-point-after-word t
+        consult-flyspell-always-check-buffer nil))
 
 (use-package compile
   :ensure t
