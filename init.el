@@ -20,8 +20,12 @@
   (package-install 'use-package))
 (require 'use-package)
 
+(use-package use-package
+  :ensure nil  ;; built-in
+  :custom
+  (use-package-always-ensure t))
+
 (use-package auto-compile
-  :ensure t
   :pin melpa-stable
   :demand
   :init
@@ -34,6 +38,7 @@
 ;; Use use-package for emacs configurations
 ;;
 (use-package emacs
+  :ensure nil
   :custom
   ;; Indispensable top level key bindings for macos
   (mac-command-modifier 'meta)
@@ -104,7 +109,6 @@
   (load-theme 'solarized-dark t))
 
 (use-package diff-hl
-  :ensure t
   :pin melpa-stable
   :hook ((dired-mode . diff-hl-dired-mode)
          (magit-pre-refresh . diff-hl-magit-pre-refresh)
@@ -113,17 +117,17 @@
   (global-diff-hl-mode +1))
 
 (use-package hl-line
-  :ensure t
+  :ensure nil  ;; built-in
   :config
   (global-hl-line-mode +1))
 
 (use-package uniquify
+  :ensure nil  ;; built-in
   :custom
   (uniquify-buffer-name-style 'post-forward)
   (uniquify-separator "|"))
 
 (use-package diminish
-  :ensure t
   :pin melpa-stable)
 
 
@@ -131,7 +135,7 @@
 ;; Remember things with recentf, savehist, and saveplace
 ;;
 (use-package recentf
-  :ensure t
+  :ensure nil  ;; built-in
   :custom
   (recentf-auto-cleanup 'never)
   (recentf-max-saved-items 1000)
@@ -140,7 +144,7 @@
   (recentf-mode +1))
 
 (use-package savehist
-  :ensure t
+  :ensure nil  ;; built-in
   :custom
   (savehist-additional-variables '(search-ring regexp-search-ring))
   (savehist-autosave-interval 60)
@@ -149,7 +153,7 @@
   (savehist-mode +1))
 
 (use-package saveplace
-  :ensure t
+  :ensure nil  ;; built-in
   :custom
   (save-place-file (expand-file-name "saveplace" user-emacs-directory))
   :config
@@ -160,20 +164,17 @@
 ;; Load MOVEC and which-key
 ;;
 (use-package vertico
-  :ensure t
   :pin melpa-stable
   :init
   (vertico-mode +1))
 
 (use-package orderless
-  :ensure t
   :pin melpa-stable
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package consult
-  :ensure t
   :pin melpa-stable
   :after (projectile)
   :custom
@@ -199,19 +200,16 @@
 )
 
 (use-package consult-dir
-  :ensure t
-  :pin melpa-stable
+  :pin melpa  ;; stable is too old
   :custom
   (consult-dir-project-list-function 'consult-dir-projectile-dirs))
 
 (use-package marginalia
-  :ensure t
   :pin melpa-stable
   :init
   (marginalia-mode +1))
 
 (use-package embark
-  :ensure t
   :pin melpa-stable
   :bind
   (("C-." . embark-act)
@@ -223,14 +221,12 @@
   (setq prefix-help-command #'embark-prefix-help-command))
 
 (use-package embark-consult
-  :ensure t
   :pin melpa-stable
   :after (embark consult)
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package which-key
-  :ensure t
   :pin melpa-stable
   :diminish
   :config
@@ -241,7 +237,6 @@
 ;; Completion - Let's Try Corfu
 ;;
 (use-package corfu
-  :ensure t
   :pin melpa-stable
   :custom
   (corfu-auto t)
@@ -270,7 +265,6 @@
 ;; Load magit, projectile, diff-hl, flycheck, etc., compile as key programming configs
 ;;
 (use-package magit
-  :ensure t
   :pin melpa-stable
   :bind (("s-m m" . magit-status)
          ("s-m j" . magit-dispatch)
@@ -279,7 +273,6 @@
          ("s-m b" . magit-blame)))
 
 (use-package projectile
-  :ensure t
   :pin melpa-stable
   :init
   (projectile-mode +1)
@@ -287,33 +280,28 @@
               ("s-p" . projectile-command-map)))
 
 (use-package flycheck
-  :ensure t
   :pin melpa-stable
   :diminish
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package consult-flycheck
-  :ensure t
   :pin melpa-stable
   :after (consult)
 )
 
 (use-package flyspell
-  :ensure t
-  :pin melpa-stable
+  :ensure nil  ;; built-in
   :diminish
   :hook ((prog-mode . flyspell-prog-mode)
          (text-mode . flyspell-mode)))
 
 (use-package flyspell-correct
-  :ensure t
   :pin melpa-stable
   :after flyspell
   :defer t)
 
 (use-package consult-flyspell
-  :ensure t
   :after (consult)
   :config
   (setq consult-flyspell-select-function (lambda () (flyspell-correct-at-point) (consult-flyspell))
@@ -321,7 +309,7 @@
         consult-flyspell-always-check-buffer nil))
 
 (use-package compile
-  :ensure t
+  :ensure nil  ;; built-in
   :custom
   (compilation-max-output-line-length nil)
   (compilation-skip-threshold 0))
@@ -335,7 +323,7 @@
   (require 'smartparens-config))
 
 (use-package eldoc
-  :ensure t
+  :ensure nil  ;; built-in
   :diminish eldoc-mode)
 
 
@@ -343,7 +331,6 @@
 ;; Navigation in space and time (tramp, windows, undo, etc.)
 ;;
 (use-package undo-tree
-  :ensure t
   :pin gnu
   :diminish
   :custom
@@ -353,19 +340,18 @@
   (global-undo-tree-mode +1))
 
 (use-package ace-window
-  :ensure t
   :pin melpa-stable
   :config
   :bind
   ([remap other-window] . ace-window))
 
 (use-package windmove
-  :ensure t
+  :ensure nil  ;; built-in
   :config
   (windmove-default-keybindings))
 
 (use-package tramp
-  :ensure t
+  :ensure nil  ;; built-in
   :custom
   (tramp-default-method "ssh")
   (tramp-show-ad-hoc-proxies t)
@@ -379,21 +365,18 @@
 ;; General editing
 ;;
 (use-package guru-mode
-  :ensure t
   :pin melpa-stable
   :diminish
   :config
   (guru-global-mode +1))
 
 (use-package volatile-highlights
-  :ensure t
   :pin melpa-stable
   :diminish
   :config
   (volatile-highlights-mode +1))
 
 (use-package anzu
-  :ensure t
   :pin melpa-stable
   :diminish
   :bind
@@ -403,7 +386,7 @@
   (global-anzu-mode +1))
 
 (use-package whitespace
-  :ensure t
+  :ensure nil  ;; built-in
   :diminish
   :init
   ;; TODO: Why doesn't this seem to work when done with :hook before-save?
@@ -415,7 +398,6 @@
   (whitespace-style '(face tabs empty trailing)))
 
 (use-package wgrep
-  :ensure t
   :pin melpa-stable)
 
 
@@ -423,7 +405,6 @@
 ;; Programming modes, tree-sitter, LSP
 ;;
 (use-package treesit-auto
-  :ensure t
   :pin melpa-stable
   :custom
   (treesit-auto-install 'prompt)
@@ -432,7 +413,6 @@
   (global-treesit-auto-mode))
 
 (use-package lsp-mode
-  :ensure t
   ;; :pin melpa-stable
   :custom
   (lsp-keymap-prefix "s-l")
@@ -458,7 +438,6 @@
   :commands lsp)
 
 (use-package lsp-ui
-  :ensure t
   ;; :pin melpa-stable
   :commands lsp-ui-mode)
 
@@ -467,7 +446,6 @@
 ;; Other configuration
 ;;
 (use-package ereader
-  :ensure t
   :pin melpa)
 
 
