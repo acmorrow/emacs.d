@@ -277,7 +277,9 @@
   :init
   (projectile-mode +1)
   :bind (:map projectile-mode-map
-              ("s-p" . projectile-command-map)))
+              ("s-p" . projectile-command-map))
+  :custom
+  (projectile-per-project-compilation-buffer t))
 
 (use-package flycheck
   :pin melpa-stable
