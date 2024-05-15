@@ -364,6 +364,18 @@
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 
+(use-package avy
+  :pin melpa-stable
+  :ensure t
+  :custom
+  (avy-enter-times-out nil)
+  :bind
+  (("M-g c" . avy-goto-char-timer)
+   ("M-g l" . avy-goto-line)
+   :map isearch-mode-map
+   ("M-s a" . avy-isearch))
+)
+
 ;;
 ;; General editing
 ;;
