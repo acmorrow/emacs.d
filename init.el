@@ -344,6 +344,7 @@
 (use-package ace-window
   :pin melpa-stable
   :config
+  (setq aw-dispatch-always t)
   :bind
   ([remap other-window] . ace-window))
 
