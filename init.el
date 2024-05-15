@@ -201,6 +201,11 @@
 
 (use-package consult-dir
   :pin melpa  ;; stable is too old
+  :after (vertico)
+  :bind (("C-x C-d" . consult-dir)
+         :map vertico-map
+         ("C-x C-d" . consult-dir)
+         ("C-x C-j" . consult-dir-jump-file-command))
   :custom
   (consult-dir-project-list-function 'consult-dir-projectile-dirs))
 
