@@ -3,7 +3,15 @@
 ;; - cape?
 ;; - supersave
 ;; - C-a C-a beginning of line beginning of statement fix
-;; - Isolate transient state and backup-type files
+;; - treesit directory no-littering
+
+;;
+;; Very early setup, enough to ensure we can avoid littering even through
+;; bringing up package/use-package/no-littering
+;;
+(defvar no-littering-etc-directory (expand-file-name ".cache/etc/" user-emacs-directory))
+(defvar no-littering-var-directory (expand-file-name ".cache/var/" user-emacs-directory))
+(setq package-user-dir (expand-file-name "elpa/" no-littering-var-directory))
 
 ;;
 ;; Top-level configuration for `package`, `use-package`, and `auto-compile`
@@ -25,6 +33,15 @@
   :custom
   (use-package-always-ensure t))
 
+(use-package no-littering
+  :pin melpa-stable
+  :demand
+  :config
+  (require 'recentf)
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (add-to-list 'recentf-exclude no-littering-etc-directory)
+  (no-littering-theme-backups))
+
 (use-package auto-compile
   :pin melpa-stable
   :demand
@@ -44,8 +61,8 @@
   (mac-command-modifier 'meta)
   (mac-option-modifier 'super)
 
-  ;; Sideline custom.el
-  (custom-file (concat user-emacs-directory "custom.el"))
+  ;; Sideline custom.el per no-littering
+  (custom-file (no-littering-expand-etc-file-name "custom.el"))
 
   ;; No need for the startup screen
   (inhibit-startup-screen t)
@@ -58,9 +75,6 @@
 
   ;; Always add a trailing newline to files
   (require-final-newline t)
-
-  ;; Keep backup files in temp
-  (backup-directory-alist '((".*" . ,temporary-file-directory)))
 
   :config
   ;; Toolbar is a waste of space
@@ -139,7 +153,6 @@
   :custom
   (recentf-auto-cleanup 'never)
   (recentf-max-saved-items 1000)
-  (recentf-save-file (expand-file-name "recentf" user-emacs-directory))
   :config
   (recentf-mode +1))
 
@@ -148,14 +161,11 @@
   :custom
   (savehist-additional-variables '(search-ring regexp-search-ring))
   (savehist-autosave-interval 60)
-  (savehist-file (expand-file-name "savehist" user-emacs-directory))
   :config
   (savehist-mode +1))
 
 (use-package saveplace
   :ensure nil  ;; built-in
-  :custom
-  (save-place-file (expand-file-name "saveplace" user-emacs-directory))
   :config
   (save-place-mode +1))
 
@@ -258,6 +268,7 @@
 (use-package embark-consult
   :pin melpa-stable
   :after (embark consult)
+  :demand t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
@@ -371,7 +382,6 @@
   :pin gnu
   :diminish
   :custom
-  (undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "undo-tree-history"))))
   (undo-tree-auto-save-history t)
   :config
   (global-undo-tree-mode +1))
