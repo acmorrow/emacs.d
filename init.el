@@ -176,7 +176,7 @@
 
 (use-package consult
   :pin melpa-stable
-  :after (projectile)
+  :after (projectile vertico)
   :custom
   (consult-narrow-key "<")
   (consult-project-function (lambda (_) (projectile-project-root)))
@@ -184,8 +184,21 @@
          ("C-x 4 b" . consult-buffer-other-window)
          ("C-x 5 b" . consult-buffer-other-frame)
          ("C-x p b" . consult-project-buffer)
+         ;; Other custom bindings
          ("M-y" . consult-yank-pop)
+         ;; M-g bindings in `goto-map'
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flycheck)
          ("M-g g" . consult-goto-line)
+         ("M-g m" . consult-mark)
+         ("M-g M" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings in `search-map'
+         ("M-s d" . consult-find)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
          ;; Isearch integration
          ("M-s e" . consult-isearch-history)
          :map isearch-mode-map
