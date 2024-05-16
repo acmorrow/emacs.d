@@ -220,7 +220,24 @@
          ("C-x C-d" . consult-dir)
          ("C-x C-j" . consult-dir-jump-file-command))
   :custom
-  (consult-dir-project-list-function 'consult-dir-projectile-dirs))
+  (consult-dir-project-list-function 'consult-dir-projectile-dirs)
+  :init
+  (defun my/consult-dir--tramp-container-hosts ()
+      (cl-loop for (id name) in (tramp-container--completion-function tramp-docker-program)
+           collect (format "/docker:%s" name)))
+
+  (defvar my/consult-dir--source-tramp-container
+    `(:name     "Docker"
+      :narrow   ?d
+      :category file
+      :face     consult-file
+      :history  file-name-history
+      :items    ,#'my/consult-dir--tramp-container-hosts)
+    "Docker candidate source for `consult-dir'.")
+
+  :config
+  (add-to-list 'consult-dir-sources 'consult-dir--source-tramp-ssh t)
+  (add-to-list 'consult-dir-sources 'my/consult-dir--source-tramp-container t))
 
 (use-package marginalia
   :pin melpa-stable
