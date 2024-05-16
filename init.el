@@ -1,9 +1,9 @@
 ;; TODOs
-;; - tramp (-container?) and consult(-dir?) integration
 ;; - dir-locals - not in this file somehow
 ;; - cape?
 ;; - supersave
 ;; - C-a C-a beginning of line beginning of statement fix
+;; - Isolate transient state and backup-type files
 
 ;;
 ;; Top-level configuration for `package`, `use-package`, and `auto-compile`
@@ -297,7 +297,7 @@
 
 
 ;;
-;; Load magit, projectile, diff-hl, flycheck, etc., compile as key programming configs
+;; Load magit, projectile, fly[check,spell], compile, etc. as key programming configs.
 ;;
 (use-package magit
   :pin melpa-stable
@@ -398,7 +398,6 @@
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
-
 (use-package avy
   :pin melpa-stable
   :ensure t
@@ -410,6 +409,7 @@
    :map isearch-mode-map
    ("M-s a" . avy-isearch))
 )
+
 
 ;;
 ;; General editing
