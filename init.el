@@ -77,9 +77,11 @@
   (require-final-newline t)
 
   :config
-  ;; Toolbar is a waste of space
+  ;; Toolbar/scrollbar is a waste of space
   (when (fboundp 'tool-bar-mode)
-    (tool-bar-mode 0))
+    (tool-bar-mode -1))
+  (when (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode -1))
 
   ;; Blinking cursor is silly
   (blink-cursor-mode -1)
