@@ -178,7 +178,10 @@
 (use-package vertico
   :pin melpa-stable
   :init
-  (vertico-mode +1))
+  (vertico-mode +1)
+  (vertico-multiform-mode +1)
+  :config
+  (add-to-list 'vertico-multiform-categories '(embark-keybinding grid)))
 
 (use-package orderless
   :pin melpa-stable
@@ -265,7 +268,15 @@
    ("s-}" . embark-export)
    ("C-h B" . embark-bindings))
   :init
-  (setq prefix-help-command #'embark-prefix-help-command))
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :custom
+  (embark-indicators '(
+    embark-minimal-indicator  ; default is embark-mixed-indicator
+    embark-highlight-indicator
+    embark-isearch-highlight-indicator))
+  (embark-prompter 'embark-completing-read-prompter)
+  (embark-cycle-key ".")
+  (embark-help-key "?"))
 
 (use-package embark-consult
   :pin melpa-stable
