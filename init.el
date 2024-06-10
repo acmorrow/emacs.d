@@ -230,7 +230,7 @@
   :bind (("C-x C-d" . consult-dir)
          :map vertico-map
          ("C-x C-d" . consult-dir)
-         ("C-x C-j" . consult-dir-jump-file-command))
+         ("C-x C-j" . consult-dir-jump-file))
   :custom
   (consult-dir-project-list-function 'consult-dir-projectile-dirs)
   :init
