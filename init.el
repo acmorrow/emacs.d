@@ -390,10 +390,43 @@
 
 (use-package ace-window
   :pin melpa-stable
+  :init
+  ;; From https://karthinks.com/software/emacs-window-management-almanac/#aw-select-the-completing-read-for-emacs-windows
+  (defun my/ace-window-prefix ()
+    "Use `ace-window' to display the buffer of the next command.
+The next buffer is the buffer displayed by the next command
+invoked immediately after this command (ignoring reading from the
+minibuffer). Creates a new window before displaying the
+buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
+`switch-to-buffer' commands are also supported."
+    (interactive)
+    (display-buffer-override-next-command
+     (lambda (buffer _)
+       (let (window type)
+         (setq
+          window (aw-select (propertize " ACE" 'face 'mode-line-highlight))
+          type 'reuse)
+         (cons window type)))
+     nil "[ace-window]")
+    (message "Use `ace-window' to display next command buffer..."))
+  (defun my/ace-window-one-command ()
+  (interactive)
+  (let ((win (aw-select " ACE")))
+    (when (windowp win)
+      (with-selected-window win
+        (let* ((command (key-binding
+                         (read-key-sequence
+                          (format "Run in %s..." (buffer-name)))))
+               (this-command command))
+          (call-interactively command))))))
   :config
   (setq aw-dispatch-always t)
   :bind
-  ([remap other-window] . ace-window))
+  ([remap other-window] . ace-window)
+  ("C-x 4 o" . 'my/ace-window-prefix)
+  ("C-x O" . 'my/ace-window-one-command)
+  :custom
+  (switch-to-buffer-obey-display-actions t))
 
 (use-package windmove
   :ensure nil  ;; built-in
