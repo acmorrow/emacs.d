@@ -269,6 +269,17 @@
    ("C-h B" . embark-bindings))
   :init
   (setq prefix-help-command #'embark-prefix-help-command)
+  ;; From https://karthinks.com/software/avy-can-do-anything/
+  (with-eval-after-load 'avy
+    (defun avy-action-embark (pt)
+      (unwind-protect
+          (save-excursion
+            (goto-char pt)
+            (embark-act))
+        (select-window
+         (cdr (ring-ref avy-ring 0))))
+      t)
+    (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark))
   :custom
   (embark-indicators '(
     embark-minimal-indicator  ; default is embark-mixed-indicator
