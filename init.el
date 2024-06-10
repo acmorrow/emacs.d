@@ -418,9 +418,9 @@
   :bind
   (("M-g c" . avy-goto-char-timer)
    ("M-g l" . avy-goto-line)
+   ("M-g w" . avy-goto-word-1)
    :map isearch-mode-map
-   ("M-s a" . avy-isearch))
-)
+   ("M-s a" . avy-isearch)))
 
 
 ;;
