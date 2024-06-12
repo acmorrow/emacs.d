@@ -472,6 +472,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :ensure t
   :custom
   (avy-enter-times-out nil)
+  (avy-all-windows 'all-frames)
   :bind
   (("M-g c" . avy-goto-char-timer)
    ("M-g l" . avy-goto-line)
