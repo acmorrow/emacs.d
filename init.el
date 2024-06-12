@@ -181,7 +181,9 @@
   (vertico-mode +1)
   (vertico-multiform-mode +1)
   :config
-  (add-to-list 'vertico-multiform-categories '(embark-keybinding grid)))
+  (add-to-list 'vertico-multiform-categories '(embark-keybinding grid))
+  :custom
+  (enable-recursive-minibuffers t))
 
 (use-package orderless
   :pin melpa-stable
