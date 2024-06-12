@@ -256,6 +256,13 @@
   (add-to-list 'consult-dir-sources 'consult-dir--source-tramp-ssh t)
   (add-to-list 'consult-dir-sources 'my/consult-dir--source-tramp-container t))
 
+(use-package consult-projectile
+  :pin melpa
+  :after (consult projectile)
+  :bind
+  (:map projectile-mode-map
+        ("s-p f" . consult-projectile)))
+
 (use-package marginalia
   :pin melpa-stable
   :init
