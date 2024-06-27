@@ -539,6 +539,11 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
+(use-package rustic
+  :pin melpa
+  :custom
+  (rust-mode-treesitter-derive t))
+
 (use-package lsp-mode
   ;; :pin melpa-stable
   :custom
