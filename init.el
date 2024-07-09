@@ -17,8 +17,11 @@
 ;; Top-level configuration for `package`, `use-package`, and `auto-compile`
 ;;
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archive-priorities '("melpa-stable" . 10) t)
+(add-to-list 'package-archive-priorities '("melpa" . 1) t)
+
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
@@ -27,14 +30,11 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
-
-(use-package use-package
-  :ensure nil  ;; built-in
-  :custom
-  (use-package-always-ensure t))
+(setq use-package-always-ensure t)
+(setq use-package-always-pin "melpa-stable")
+(use-package use-package)
 
 (use-package no-littering
-  :pin melpa-stable
   :demand
   :config
   (require 'recentf)
@@ -43,7 +43,6 @@
   (no-littering-theme-backups))
 
 (use-package auto-compile
-  :pin melpa-stable
   :demand
   :init
   (setq load-prefer-newer t)
@@ -119,13 +118,11 @@
 ;;
 (use-package solarized
   :ensure solarized-theme
-  :pin melpa-stable
   :defer t
   :init
   (load-theme 'solarized-dark t))
 
 (use-package diff-hl
-  :pin melpa-stable
   :hook ((dired-mode . diff-hl-dired-mode)
          (magit-pre-refresh . diff-hl-magit-pre-refresh)
          (magit-post-refresh . diff-hl-magit-post-refresh))
@@ -143,8 +140,7 @@
   (uniquify-buffer-name-style 'post-forward)
   (uniquify-separator "|"))
 
-(use-package diminish
-  :pin melpa-stable)
+(use-package diminish)
 
 
 ;;
@@ -176,7 +172,6 @@
 ;; Load MOVEC and which-key
 ;;
 (use-package vertico
-  :pin melpa-stable
   :init
   (vertico-mode +1)
   (vertico-multiform-mode +1)
@@ -186,13 +181,11 @@
   (enable-recursive-minibuffers t))
 
 (use-package orderless
-  :pin melpa-stable
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package consult
-  :pin melpa-stable
   :after (projectile vertico)
   :custom
   (consult-narrow-key "<")
@@ -264,12 +257,10 @@
         ("s-p f" . consult-projectile)))
 
 (use-package marginalia
-  :pin melpa-stable
   :init
   (marginalia-mode +1))
 
 (use-package embark
-  :pin melpa-stable
   :bind
   (("C-." . embark-act)
    ("C->" . embark-dwim)
@@ -299,14 +290,12 @@
   (embark-help-key "?"))
 
 (use-package embark-consult
-  :pin melpa-stable
   :after (embark consult)
   :demand t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package which-key
-  :pin melpa-stable
   :diminish
   :config
   (which-key-mode +1))
@@ -316,7 +305,6 @@
 ;; Completion - Let's Try Corfu
 ;;
 (use-package corfu
-  :pin melpa-stable
   :custom
   (corfu-auto t)
   :init
@@ -344,7 +332,6 @@
 ;; Load magit, projectile, fly[check,spell], compile, etc. as key programming configs.
 ;;
 (use-package magit
-  :pin melpa-stable
   :bind (("s-m m" . magit-status)
          ("s-m j" . magit-dispatch)
          ("s-m k" . magit-file-dispatch)
@@ -352,7 +339,6 @@
          ("s-m b" . magit-blame)))
 
 (use-package projectile
-  :pin melpa-stable
   :init
   (projectile-mode +1)
   :bind (:map projectile-mode-map
@@ -361,13 +347,11 @@
   (projectile-per-project-compilation-buffer t))
 
 (use-package flycheck
-  :pin melpa-stable
   :diminish
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package consult-flycheck
-  :pin melpa-stable
   :after (consult)
 )
 
@@ -378,11 +362,11 @@
          (text-mode . flyspell-mode)))
 
 (use-package flyspell-correct
-  :pin melpa-stable
   :after flyspell
   :defer t)
 
 (use-package consult-flyspell
+  :pin melpa
   :after (consult)
   :config
   (setq consult-flyspell-select-function (lambda () (flyspell-correct-at-point) (consult-flyspell))
@@ -397,7 +381,6 @@
 
 (use-package smartparens
   :ensure t
-  :pin melpa-stable
   :diminish smartparens-mode
   :hook (prog-mode text-mode markdown-mode)
   :config
@@ -420,7 +403,6 @@
   (global-undo-tree-mode +1))
 
 (use-package ace-window
-  :pin melpa-stable
   :init
   ;; From https://karthinks.com/software/emacs-window-management-almanac/#aw-select-the-completing-read-for-emacs-windows
   (defun my/ace-window-prefix ()
@@ -475,7 +457,6 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 (use-package avy
-  :pin melpa-stable
   :ensure t
   :custom
   (avy-enter-times-out nil)
@@ -492,19 +473,16 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 ;; General editing
 ;;
 (use-package guru-mode
-  :pin melpa-stable
   :diminish
   :config
   (guru-global-mode +1))
 
 (use-package volatile-highlights
-  :pin melpa-stable
   :diminish
   :config
   (volatile-highlights-mode +1))
 
 (use-package anzu
-  :pin melpa-stable
   :diminish
   :bind
   (("M-%" . anzu-query-replace)
@@ -524,28 +502,31 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (whitespace-line-column nil)
   (whitespace-style '(face tabs empty trailing)))
 
-(use-package wgrep
-  :pin melpa-stable)
+(use-package wgrep)
 
 
 ;;
 ;; Programming modes, tree-sitter, LSP
 ;;
 (use-package treesit-auto
-  :pin melpa-stable
   :custom
   (treesit-auto-install 'prompt)
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
+(use-package rust-mode
+  :demand
+  :pin melpa)
+
 (use-package rustic
   :pin melpa
+  :after (rust-mode)
   :custom
   (rust-mode-treesitter-derive t))
 
 (use-package lsp-mode
-  ;; :pin melpa-stable
+  :pin melpa
   :custom
   (lsp-keymap-prefix "s-l")
   (lsp-completion-provider :none) ;; Corfu!
@@ -572,7 +553,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :commands lsp)
 
 (use-package lsp-ui
-  ;; :pin melpa-stable
+  :pin melpa
   :commands lsp-ui-mode)
 
 
