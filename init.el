@@ -375,7 +375,9 @@
   :diminish smartparens-mode
   :hook (prog-mode text-mode markdown-mode)
   :config
-  (require 'smartparens-config))
+  (require 'smartparens-config)
+  :custom
+  (sp-base-key-bindings 'sp))
 
 (use-package eldoc
   :diminish eldoc-mode)
