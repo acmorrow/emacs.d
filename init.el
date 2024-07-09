@@ -554,7 +554,10 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 
 (use-package lsp-ui
   :pin melpa
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-doc-show-with-mouse nil)
+  (lsp-ui-sideline-enable nil))
 
 
 ;;
