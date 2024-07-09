@@ -30,6 +30,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
+(require 'use-package-ensure)
 (setq use-package-always-ensure t)
 (setq use-package-always-pin "melpa-stable")
 (use-package use-package)
@@ -54,7 +55,6 @@
 ;; Use use-package for emacs configurations
 ;;
 (use-package emacs
-  :ensure nil
   :custom
   ;; Indispensable top level key bindings for macos
   (mac-command-modifier 'meta)
@@ -74,6 +74,10 @@
 
   ;; Always add a trailing newline to files
   (require-final-newline t)
+
+  ;; Configure buffer uniqueness
+  (uniquify-buffer-name-style 'post-forward)
+  (uniquify-separator "|")
 
   :config
   ;; Toolbar/scrollbar is a waste of space
@@ -130,15 +134,8 @@
   (global-diff-hl-mode +1))
 
 (use-package hl-line
-  :ensure nil  ;; built-in
   :config
   (global-hl-line-mode +1))
-
-(use-package uniquify
-  :ensure nil  ;; built-in
-  :custom
-  (uniquify-buffer-name-style 'post-forward)
-  (uniquify-separator "|"))
 
 (use-package diminish)
 
@@ -147,7 +144,6 @@
 ;; Remember things with recentf, savehist, and saveplace
 ;;
 (use-package recentf
-  :ensure nil  ;; built-in
   :custom
   (recentf-auto-cleanup 'never)
   (recentf-max-saved-items 1000)
@@ -155,7 +151,6 @@
   (recentf-mode +1))
 
 (use-package savehist
-  :ensure nil  ;; built-in
   :custom
   (savehist-additional-variables '(search-ring regexp-search-ring))
   (savehist-autosave-interval 60)
@@ -163,7 +158,6 @@
   (savehist-mode +1))
 
 (use-package saveplace
-  :ensure nil  ;; built-in
   :config
   (save-place-mode +1))
 
@@ -356,7 +350,6 @@
 )
 
 (use-package flyspell
-  :ensure nil  ;; built-in
   :diminish
   :hook ((prog-mode . flyspell-prog-mode)
          (text-mode . flyspell-mode)))
@@ -374,20 +367,17 @@
         consult-flyspell-always-check-buffer nil))
 
 (use-package compile
-  :ensure nil  ;; built-in
   :custom
   (compilation-max-output-line-length nil)
   (compilation-skip-threshold 0))
 
 (use-package smartparens
-  :ensure t
   :diminish smartparens-mode
   :hook (prog-mode text-mode markdown-mode)
   :config
   (require 'smartparens-config))
 
 (use-package eldoc
-  :ensure nil  ;; built-in
   :diminish eldoc-mode)
 
 
@@ -442,12 +432,10 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (switch-to-buffer-obey-display-actions t))
 
 (use-package windmove
-  :ensure nil  ;; built-in
   :config
   (windmove-default-keybindings))
 
 (use-package tramp
-  :ensure nil  ;; built-in
   :custom
   (tramp-default-method "ssh")
   (tramp-show-ad-hoc-proxies t)
@@ -457,7 +445,6 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 (use-package avy
-  :ensure t
   :custom
   (avy-enter-times-out nil)
   (avy-all-windows 'all-frames)
@@ -491,7 +478,6 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (global-anzu-mode +1))
 
 (use-package whitespace
-  :ensure nil  ;; built-in
   :diminish
   :init
   ;; TODO: Why doesn't this seem to work when done with :hook before-save?
