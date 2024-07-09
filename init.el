@@ -4,6 +4,7 @@
 ;; - supersave
 ;; - C-a C-a beginning of line beginning of statement fix
 ;; - treesit directory no-littering
+;; - C++ treesit grammer version mismatch
 
 ;;
 ;; Very early setup, enough to ensure we can avoid littering even through
