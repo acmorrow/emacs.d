@@ -508,14 +508,14 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 (use-package rust-mode
   :demand
   :pin melpa
+  :custom
+  (rust-mode-treesitter-derive t)
   :hook
   (rust-mode . (lambda () (setq indent-tabs-mode nil))))
 
 (use-package rustic
   :pin melpa
-  :after (rust-mode)
-  :custom
-  (rust-mode-treesitter-derive t))
+  :after (rust-mode))
 
 (use-package lsp-mode
   :pin melpa
