@@ -396,6 +396,7 @@
   (global-undo-tree-mode +1))
 
 (use-package ace-window
+  :demand
   :init
   ;; From https://karthinks.com/software/emacs-window-management-almanac/#aw-select-the-completing-read-for-emacs-windows
   (defun my/ace-window-prefix ()
@@ -425,14 +426,14 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
                           (format "Run in %s..." (buffer-name)))))
                (this-command command))
           (call-interactively command))))))
-  :config
-  (setq aw-dispatch-always t)
   :bind
   ([remap other-window] . ace-window)
   ("C-x 4 o" . 'my/ace-window-prefix)
   ("C-x O" . 'my/ace-window-one-command)
   :custom
-  (switch-to-buffer-obey-display-actions t))
+  (switch-to-buffer-obey-display-actions t)
+  (aw-dispatch-always t)
+  )
 
 (use-package windmove
   :config
