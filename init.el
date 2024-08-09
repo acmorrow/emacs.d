@@ -522,11 +522,16 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :custom
   (lsp-keymap-prefix "s-l")
   (lsp-completion-provider :none) ;; Corfu!
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
   :init
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(orderless))) ;; Configure orderless
-  :hook ((c-mode . lsp-deferred)
+  :hook ((lsp-mode . lsp-ui-mode)
+         (lsp-mode . lsp-enable-which-key-integration)
+         (lsp-completion-mode . my/lsp-mode-setup-completion)
+         (c-mode . lsp-deferred)
          (c-ts-mode . lsp-deferred)
          (c-or-c++-mode . lsp-deferred)
          (c-or-c++-ts-mode . lsp-deferred)
@@ -539,9 +544,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
          (rust-mode . lsp-deferred)
          (rust-ts-mode . lsp-deferred)
          (python-mode . lsp-deferred)
-         (python-ts-mode . lsp-deferred)
-         (lsp-mode . lsp-enable-which-key-integration)
-         (lsp-completion-mode . my/lsp-mode-setup-completion))
+         (python-ts-mode . lsp-deferred))
   :commands lsp)
 
 (use-package lsp-ui
