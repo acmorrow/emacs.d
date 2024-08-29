@@ -535,6 +535,19 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (lsp-completion-provider :none) ;; Corfu!
   (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.01)
+  ;; Having the inlays on all the time is distracting. Instead, toggle them on
+  ;; interactively with `M-x lsp-inline-hints-mode` when you want them, then make
+  ;; them go away by running it again.
+  ;; TODO: Add a toggle for this under the LSP command keymap.
+  ;; (lsp-inlay-hint-enable t)
+  ;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-parameter-hints nil)
+  (lsp-rust-analyzer-display-reborrow-hints nil)
   :init
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
