@@ -505,6 +505,11 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
+(use-package cmake-mode
+  :ensure t
+  :mode (("CMakeLists\\.txt\\'" . cmake-mode)
+         ("\\.cmake\\'" . cmake-mode)))
+
 (use-package rust-mode
   :demand
   :pin melpa
@@ -516,6 +521,12 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 (use-package rustic
   :pin melpa
   :after (rust-mode))
+
+(use-package go-mode
+  :hook
+  (go-ts-mode . (lambda () (whitespace-toggle-options '(tabs))))
+  (go-ts-mode . (lambda () (setq tab-width 2)))
+  (go-ts-mode . (lambda () (setq go-ts-mode-indent-offset 2))))
 
 (use-package lsp-mode
   :pin melpa
