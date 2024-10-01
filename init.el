@@ -598,6 +598,17 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (lsp-ui-doc-show-with-mouse nil)
   (lsp-ui-sideline-enable nil))
 
+(use-package consult-lsp
+  :pin melpa
+  :after lsp
+  :general
+  (:keymaps 'lsp-mode-map
+            [remap xref-find-apropos] 'consult-lsp-symbols))
+
+
+;;
+;; Snippets
+;;
 (use-package yasnippet
   :init (add-hook 'prog-mode-hook #'yas-minor-mode)
   :config (yas-reload-all))
