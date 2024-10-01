@@ -4,7 +4,6 @@
 ;; - supersave
 ;; - C-a C-a beginning of line beginning of statement fix
 ;; - treesit directory no-littering
-;; - C++ treesit grammer version mismatch
 
 ;;
 ;; Very early setup, enough to ensure we can avoid littering even through
@@ -502,6 +501,20 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :custom
   (treesit-auto-install 'prompt)
   :config
+  ;; https://www.reddit.com/r/emacs/comments/1ewrjrm/help_get_proper_syntax_highlight_on_ctsmode/
+  (when (version<= "29.0" emacs-version)
+    (add-to-list 'treesit-auto-recipe-list
+                 (make-treesit-auto-recipe
+                  :lang 'cpp
+                  :ts-mode 'c++-ts-mode
+                  :remap 'c++-mode
+                  :url "https://github.com/tree-sitter/tree-sitter-cpp"
+                  ;; Needed for syntax highlighting in `c++-ts-mode' in emacs 29
+                  :revision "v0.22.0"
+                  :ext "\\.cpp\\'"))
+    ;; https://github.com/renzmann/treesit-auto/issues/76
+    (setq major-mode-remap-alist
+          (treesit-auto--build-major-mode-remap-alist)))
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
