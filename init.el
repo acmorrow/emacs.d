@@ -541,6 +541,13 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (go-ts-mode . (lambda () (setq tab-width 2)))
   (go-ts-mode . (lambda () (setq go-ts-mode-indent-offset 2))))
 
+(use-package markdown-mode
+  :ensure t
+  :mode
+  ("README\\.md\\'" . gfm-mode)
+  :custom
+  (markdown-command "markdown"))
+
 (use-package lsp-mode
   :pin melpa
   :custom
