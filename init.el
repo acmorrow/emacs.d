@@ -600,10 +600,9 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 
 (use-package consult-lsp
   :pin melpa
-  :after lsp
-  :general
-  (:keymaps 'lsp-mode-map
-            [remap xref-find-apropos] 'consult-lsp-symbols))
+  :after lsp-mode
+  :commands consult-lsp-symbols
+  :init (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
 
 
 ;;
