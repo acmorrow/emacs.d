@@ -164,7 +164,8 @@
 
 
 ;;
-;; Load MOVEC and which-key
+;; Load MOVEC and which-key, and other means
+;; of finding things
 ;;
 (use-package vertico
   :init
@@ -294,6 +295,9 @@
   :diminish
   :config
   (which-key-mode +1))
+
+(use-package rg
+  :ensure-system-package rg)
 
 
 ;;
