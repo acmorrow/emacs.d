@@ -186,6 +186,8 @@
   :custom
   (consult-narrow-key "<")
   (consult-project-function (lambda (_) (projectile-project-root)))
+  (xref-show-xrefs-function 'consult-xref)
+  (xref-show-definitions-function 'consult-xref)
   :bind (("C-x b" . consult-buffer)
          ("C-x 4 b" . consult-buffer-other-window)
          ("C-x 5 b" . consult-buffer-other-frame)
@@ -215,8 +217,7 @@
          ;; Minibuffer history
          :map minibuffer-local-map
          ("M-s" . consult-history)
-         ("M-r" . consult-history))
-)
+         ("M-r" . consult-history)))
 
 (use-package consult-dir
   :pin melpa  ;; stable is too old
