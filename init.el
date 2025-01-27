@@ -453,6 +453,13 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 (use-package avy
+  :config
+  ;; From https://karthinks.com/software/emacs-window-management-almanac/
+  (define-advice pop-global-mark (:around (pgm) use-display-buffer)
+    "Make `pop-to-buffer' jump buffers via `display-buffer'."
+    (cl-letf (((symbol-function 'switch-to-buffer)
+               #'pop-to-buffer))
+      (funcall pgm)))
   :custom
   (avy-enter-times-out nil)
   (avy-all-windows 'all-frames)
