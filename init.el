@@ -617,6 +617,34 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :commands consult-lsp-symbols
   :init (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
 
+(use-package auth-source
+  :pin melpa
+  :ensure t)
+
+(use-package auth-source-1password
+  :pin melpa
+  :ensure t
+  :ensure-system-package op
+  :config
+  (auth-source-1password-enable))
+
+(use-package gptel
+  :pin melpa
+  :config
+  (setq gptel-model 'claude-3-sonnet-20240229)
+  (defun my/get-anthropic-api-key ()
+    "Retrieve Anthropic API key from auth-source (1Password)."
+    (let ((key (auth-source-pick-first-password
+                :host "anthropic.com"
+                :user "password")))
+      (if key
+          key
+        (user-error "Anthropic API key not found in auth-source"))))
+
+  (setq gptel-backend (gptel-make-anthropic "Claude"
+                         :stream t
+                         :key (my/get-anthropic-api-key))))
+
 
 ;;
 ;; Snippets
