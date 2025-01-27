@@ -498,6 +498,13 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 
 (use-package wgrep)
 
+(use-package atomic-chrome
+  :demand t
+  :commands (atomic-chrome-start-server)
+  :config
+  (setq-default atomic-chrome-extension-type-list '(atomic-chrome))
+  (atomic-chrome-start-server))
+
 
 ;;
 ;; Programming modes, tree-sitter, LSP
