@@ -1,6 +1,5 @@
 ;; TODOs
 ;; - dir-locals - not in this file somehow
-;; - cape?
 ;; - supersave
 ;; - C-a C-a beginning of line beginning of statement fix
 ;; - treesit directory no-littering
@@ -302,7 +301,7 @@
 
 
 ;;
-;; Completion - Let's Try Corfu
+;; Completion - Let's Try Corfu and Cape
 ;;
 (use-package corfu
   :custom
@@ -326,6 +325,17 @@
   (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
   (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode))
+
+(use-package cape
+  :demand
+  :config
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  (add-hook 'prog-mode-hook
+            (lambda ()
+              (add-hook 'completion-at-point-functions
+                        #'cape-keyword nil t))))
 
 
 ;;
