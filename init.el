@@ -1,4 +1,5 @@
 ;; TODOs
+;; - snippets: re-enable
 ;; - dir-locals - not in this file somehow
 ;; - supersave
 ;; - C-a C-a beginning of line beginning of statement fix
@@ -668,16 +669,24 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 ;;
 ;; Snippets
 ;;
-(use-package yasnippet
-  :init (add-hook 'prog-mode-hook #'yas-minor-mode)
-  :config (yas-reload-all))
+;; (use-package yasnippet
+;;   :init (add-hook 'prog-mode-hook #'yas-minor-mode)
+;;   :config (yas-reload-all))
 
-(use-package yasnippet-snippets
-  :after yasnippet)
+;; (use-package yasnippet-snippets
+;;   :after yasnippet)
 
-(use-package consult-yasnippet
-  :pin melpa
-  :after (consult yasnippet))
+;; (use-package consult-yasnippet
+;;   :pin melpa
+;;   :after (consult yasnippet))
+
+;; (use-package yasnippet-capf
+;;   :after cape
+;;   :init
+;;   (defun my/yasnippet-capf-h ()
+;;     (add-hook 'completion-at-point-functions #'yasnippet-capf nil t))
+;;   :hook
+;;   (prog-mode . my/yasnippet-capf-h))
 
 
 ;;
