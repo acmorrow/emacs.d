@@ -534,19 +534,17 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (treesit-auto-install 'prompt)
   :config
   ;; https://www.reddit.com/r/emacs/comments/1ewrjrm/help_get_proper_syntax_highlight_on_ctsmode/
-  (when (version<= "29.0" emacs-version)
-    (add-to-list 'treesit-auto-recipe-list
-                 (make-treesit-auto-recipe
-                  :lang 'cpp
-                  :ts-mode 'c++-ts-mode
-                  :remap 'c++-mode
-                  :url "https://github.com/tree-sitter/tree-sitter-cpp"
-                  ;; Needed for syntax highlighting in `c++-ts-mode' in emacs 29
-                  :revision "v0.22.0"
-                  :ext "\\.cpp\\'"))
-    ;; https://github.com/renzmann/treesit-auto/issues/76
-    (setq major-mode-remap-alist
-          (treesit-auto--build-major-mode-remap-alist)))
+  (add-to-list 'treesit-auto-recipe-list
+               (make-treesit-auto-recipe
+                :lang 'rust
+                :ts-mode 'rust-ts-mode
+                :remap 'rust-mode
+                :url "https://github.com/tree-sitter/tree-sitter-rust"
+                :revision "v0.23.3"
+                :ext "\\.rs\\'"))
+  ;; https://github.com/renzmann/treesit-auto/issues/76
+  (setq major-mode-remap-alist
+        (treesit-auto--build-major-mode-remap-alist))
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
@@ -568,10 +566,11 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :after (rust-mode))
 
 (use-package go-mode
-  :hook
-  (go-ts-mode . (lambda () (whitespace-toggle-options '(tabs))))
-  (go-ts-mode . (lambda () (setq tab-width 2)))
-  (go-ts-mode . (lambda () (setq go-ts-mode-indent-offset 2))))
+  :hook (go-ts-mode . (lambda ()
+                        (whitespace-toggle-options '(tabs))
+                        (setq tab-width 2)))
+  :custom
+  (go-ts-mode-indent-offset 2))
 
 (use-package markdown-mode
   :ensure t
@@ -604,8 +603,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(orderless))) ;; Configure orderless
-  :hook ((lsp-mode . lsp-ui-mode)
-         (lsp-mode . lsp-enable-which-key-integration)
+  :hook ((lsp-mode . lsp-enable-which-key-integration)
          (lsp-completion-mode . my/lsp-mode-setup-completion)
          (c++-mode . lsp-deferred)
          (c++-ts-mode . lsp-deferred)
@@ -618,11 +616,11 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
          (go-mode . lsp-deferred)
          (go-ts-mode . lsp-deferred)
          (python-mode . lsp-deferred)
-         (python-ts-mode . lsp-deferred))
+         (python-ts-mode . lsp-deferred)
          (rust-mode . lsp-deferred)
          (rust-ts-mode . lsp-deferred)
-         (typescript-ts-mode . lsp-deferred)
-  :commands lsp)
+         (typescript-ts-mode . lsp-deferred))
+  :commands (lsp lsp-deferred))
 
 (use-package lsp-ui
   :pin melpa
