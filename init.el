@@ -122,7 +122,11 @@
 
   ;; Inconsolata-16 as the default
   ;; TODO: Can this go into the `solarized` use-pacakge below?
-  (add-to-list 'default-frame-alist '(font . "Inconsolata-16")))
+  (add-to-list 'default-frame-alist '(font . "Inconsolata-16"))
+
+  ;; On macOS, this key is used to cycle windows of the current
+  ;; app. So, arrange to let it do so for our frames as well.
+  :bind (("M-`" . ns-next-frame)))
 
 
 ;;
