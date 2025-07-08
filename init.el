@@ -461,8 +461,12 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (tramp-default-method "ssh")
   (tramp-show-ad-hoc-proxies t)
   (enable-remote-dir-locals t)
-  (tramp-use-ssh-controlmaster-options nil)
+  (tramp-use-scp-direct-remote-copying t)
+  (tramp-use-connection-share nil)
+  (tramp-copy-size-limit (* 1024 1024))
   :config
+  (with-eval-after-load 'compile
+    (remove-hook 'compilation-mode-hook #'tramp-compile-disable-ssh-controlmaster-options))
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 (use-package avy
