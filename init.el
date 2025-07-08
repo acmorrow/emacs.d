@@ -84,6 +84,9 @@
   (custom-unlispify-menu-entries nil)
   (custom-unlispify-tag-names nil)
 
+  ;; Go to where things already are
+  (display-buffer-base-action '(display-buffer-reuse-window (reusable-frames . visible)))
+
   :config
   ;; Toolbar/scrollbar is a waste of space
   (when (fboundp 'tool-bar-mode)
@@ -453,6 +456,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :custom
   (switch-to-buffer-obey-display-actions t)
   (aw-dispatch-always t)
+  (ace-window-display-mode t)
   )
 
 (use-package windmove
