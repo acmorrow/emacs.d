@@ -81,6 +81,9 @@
   (uniquify-buffer-name-style 'post-forward)
   (uniquify-separator "|")
 
+  (custom-unlispify-menu-entries nil)
+  (custom-unlispify-tag-names nil)
+
   :config
   ;; Toolbar/scrollbar is a waste of space
   (when (fboundp 'tool-bar-mode)
