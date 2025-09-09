@@ -371,7 +371,12 @@
   :bind (:map projectile-mode-map
               ("s-p" . projectile-command-map))
   :custom
-  (projectile-per-project-compilation-buffer t))
+  (projectile-per-project-compilation-buffer t)
+  (compilation-save-buffers-predicate
+   (lambda ()
+     (and (buffer-file-name)
+          (projectile-project-p)
+          (projectile-file-exists-p (buffer-file-name))))))
 
 (use-package flycheck
   :diminish
