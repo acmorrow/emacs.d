@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; TODOs
 ;; - snippets: re-enable
 ;; - dir-locals - not in this file somehow
