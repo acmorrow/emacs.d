@@ -356,6 +356,9 @@
 ;; Load magit, projectile, fly[check,spell], compile, etc. as key programming configs.
 ;;
 (use-package magit
+  :custom
+  (magit-list-refs-sortby "-creatordate")
+  (magit-diff-refine-hunk 'all)
   :bind (("s-m m" . magit-status)
          ("s-m j" . magit-dispatch)
          ("s-m k" . magit-file-dispatch)
