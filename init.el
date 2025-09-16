@@ -1,7 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
 ;; TODOs
-;; - snippets: re-enable
 ;; - dir-locals - not in this file somehow
 ;; - supersave
 ;; - C-a C-a beginning of line beginning of statement fix
@@ -343,6 +342,8 @@
 (use-package cape
   :demand
   :config
+  (define-key cape-prefix-map (kbd "y") 'consult-yasnippet)
+  (define-key cape-prefix-map (kbd "Y") 'yas-insert-snippet)
   (add-hook 'completion-at-point-functions #'cape-dabbrev)
   (add-hook 'completion-at-point-functions #'cape-file)
   (add-hook 'completion-at-point-functions #'cape-elisp-block)
@@ -692,24 +693,17 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 ;;
 ;; Snippets
 ;;
-;; (use-package yasnippet
-;;   :init (add-hook 'prog-mode-hook #'yas-minor-mode)
-;;   :config (yas-reload-all))
+(use-package yasnippet
+  :diminish yas-minor-mod
+  :hook (prog-mode . yas-minor-mode)
+  :config (yas-reload-all))
 
-;; (use-package yasnippet-snippets
-;;   :after yasnippet)
+(use-package yasnippet-snippets
+  :after yasnippet)
 
-;; (use-package consult-yasnippet
-;;   :pin melpa
-;;   :after (consult yasnippet))
-
-;; (use-package yasnippet-capf
-;;   :after cape
-;;   :init
-;;   (defun my/yasnippet-capf-h ()
-;;     (add-hook 'completion-at-point-functions #'yasnippet-capf nil t))
-;;   :hook
-;;   (prog-mode . my/yasnippet-capf-h))
+(use-package consult-yasnippet
+  :pin melpa
+  :after (consult yasnippet))
 
 
 ;;
