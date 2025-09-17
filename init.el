@@ -128,7 +128,8 @@
 
   ;; On macOS, this key is used to cycle windows of the current
   ;; app. So, arrange to let it do so for our frames as well.
-  :bind (("M-`" . ns-next-frame)))
+  :bind (("M-`" . ns-next-frame)
+         ("M-/" . completion-at-point)))
 
 
 ;;
@@ -332,9 +333,6 @@
         ))
 
 (use-package dabbrev
-  ;; Swap M-/ and C-M-/
-  :bind (("M-/" . dabbrev-completion)
-         ("C-M-/" . dabbrev-expand))
   :config
   (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
   (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
