@@ -5,7 +5,6 @@
 ;; - supersave
 ;; - treesit directory no-littering
 ;; - dap mode for C++ and Rust
-;; - proto mode automated
 
 ;;
 ;; Very early setup, enough to ensure we can avoid littering even through
@@ -607,6 +606,9 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   ("README\\.md\\'" . gfm-mode)
   :custom
   (markdown-command "markdown"))
+
+(use-package protobuf-mode
+  :mode "\\.proto\\'")
 
 (use-package lsp-mode
   :pin melpa
