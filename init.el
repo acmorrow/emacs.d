@@ -341,11 +341,13 @@
 
 (use-package cape
   :demand
+  :bind ("C-M-/" . cape-prefix-map)
   :config
   (define-key cape-prefix-map (kbd "y") 'consult-yasnippet)
   (define-key cape-prefix-map (kbd "Y") 'yas-insert-snippet)
   (add-hook 'completion-at-point-functions #'cape-dabbrev)
   (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-history)
   (add-hook 'completion-at-point-functions #'cape-elisp-block)
   (add-hook 'prog-mode-hook
             (lambda ()
