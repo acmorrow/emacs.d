@@ -547,7 +547,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :custom
   (atomic-chrome-extension-type-list '(atomic-chrome))
   (atomic-chrome-buffer-open-style 'frame)
-  :commands (atomic-chrome-start-server))
+  :config (atomic-chrome-start-server))
 
 (use-package crux
   :bind (("C-a" . crux-move-beginning-of-line)
