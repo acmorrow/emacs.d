@@ -5,6 +5,7 @@
 ;; - supersave
 ;; - treesit directory no-littering
 ;; - dap mode for C++ and Rust
+;; - flyspell correct integration via corfu
 
 ;;
 ;; Very early setup, enough to ensure we can avoid littering even through
