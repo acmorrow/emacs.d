@@ -3,7 +3,6 @@
 ;; TODOs
 ;; - dir-locals - not in this file somehow
 ;; - supersave
-;; - C-a C-a beginning of line beginning of statement fix
 ;; - treesit directory no-littering
 ;; - dap mode for C++ and Rust
 ;; - proto mode automated
@@ -550,6 +549,10 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (atomic-chrome-extension-type-list '(atomic-chrome))
   (atomic-chrome-buffer-open-style 'frame)
   :commands (atomic-chrome-start-server))
+
+(use-package crux
+  :bind (("C-a" . crux-move-beginning-of-line)
+         ("C-k" . crux-smart-kill-line)))
 
 
 ;;
