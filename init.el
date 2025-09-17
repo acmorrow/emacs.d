@@ -1,13 +1,14 @@
 ;;; -*- lexical-binding: t -*-
 
-;; TODOs
-;; - dir-locals - not in this file somehow
-;; - treesit directory no-littering
-;; - dap mode for C++ and Rust
-;; - flyspell correct integration via corfu, don't overwrite C-. anywhere conflicts with embark.
-;; - activities or burly?
-;; - embark-prefix-help-command without needing to go through C-h.
-;; - embark-act for LSP and similar
+;; TODO: dir-locals - not in this file somehow
+;; TODO: treesit directory no-littering
+;; TODO: dap mode for C++ and Rust
+;; TODO: flyspell correct integration via corfu, don't overwrite C-. anywhere conflicts with embark.
+;; TODO: activities or burly?
+;; TODO: embark-prefix-help-command without needing to go through C-h.
+;; TODO: embark-act for LSP and similar
+;; TODO: org mode setup
+;; TODO: claude code IDE integration
 
 ;;
 ;; Very early setup, enough to ensure we can avoid littering even through
