@@ -2,10 +2,12 @@
 
 ;; TODOs
 ;; - dir-locals - not in this file somehow
-;; - supersave
 ;; - treesit directory no-littering
 ;; - dap mode for C++ and Rust
-;; - flyspell correct integration via corfu
+;; - flyspell correct integration via corfu, don't overwrite C-. anywhere conflicts with embark.
+;; - activities or burly?
+;; - embark-prefix-help-command without needing to go through C-h.
+;; - embark-act for LSP and similar
 
 ;;
 ;; Very early setup, enough to ensure we can avoid littering even through
