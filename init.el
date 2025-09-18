@@ -8,7 +8,6 @@
 ;; TODO: embark-prefix-help-command without needing to go through C-h.
 ;; TODO: embark-act for LSP and similar
 ;; TODO: org mode setup
-;; TODO: claude code IDE integration
 
 ;;
 ;; Very early setup, enough to ensure we can avoid littering even through
@@ -697,6 +696,38 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (setq gptel-backend (gptel-make-anthropic "Claude"
                          :stream t
                          :key (my/get-anthropic-api-key))))
+
+
+;; Prereq for claude-code-ide
+(use-package eat
+  :vc (:url "https://codeberg.org/akib/emacs-eat" :rev :newest)
+  :defer t)
+
+(use-package claude-code-ide
+  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+  ;; :ensure-system-package claude-code
+  :bind ("s-c" . claude-code-ide-menu)
+  :custom
+
+  (claude-code-ide-cli-extra-flags "--model claude-sonnet-4-20250514")
+
+  ;; Terminal backend
+  (claude-code-ide-terminal-backend 'eat)
+
+  ;; Window configuration
+  (claude-code-ide-use-side-window t)
+  (claude-code-ide-window-side 'right)
+  (claude-code-ide-window-width 90)
+  (claude-code-ide-focus-on-open t)
+
+  ;; Diff integration with ediff
+  (claude-code-ide-use-ide-diff t)
+  (claude-code-ide-focus-claude-after-ediff t)
+
+  :config
+  (setenv "ANTHROPIC_API_KEY" (my/get-anthropic-api-key))
+  ;; Enable Emacs MCP tools for deep integration
+  (claude-code-ide-emacs-tools-setup))
 
 
 ;;
