@@ -724,6 +724,10 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (claude-code-ide-use-ide-diff t)
   (claude-code-ide-focus-claude-after-ediff t)
 
+  (claude-code-ide-diagnostics-backend 'flycheck)
+  (claude-code-ide-debug-mode nil)
+  (claude-code-ide-chat-auto-scroll t)
+
   :config
   (setenv "ANTHROPIC_API_KEY" (my/get-anthropic-api-key))
   ;; Enable Emacs MCP tools for deep integration
