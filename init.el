@@ -701,7 +701,13 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 ;; Prereq for claude-code-ide
 (use-package eat
   :vc (:url "https://codeberg.org/akib/emacs-eat" :rev :newest)
-  :defer t)
+  :defer t
+  :custom
+  (eat-semi-char-non-bound-keys
+    ;; Allow M-` to have the window cycling behavior we bound above.
+    (append eat-semi-char-non-bound-keys '([?\e ?\`])))
+  :config
+  (eat-update-semi-char-mode-map))
 
 (use-package claude-code-ide
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
