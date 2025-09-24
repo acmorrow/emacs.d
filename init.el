@@ -715,9 +715,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (claude-code-ide-terminal-backend 'eat)
 
   ;; Window configuration
-  (claude-code-ide-use-side-window t)
-  (claude-code-ide-window-side 'right)
-  (claude-code-ide-window-width 90)
+  (claude-code-ide-use-side-window nil)
   (claude-code-ide-focus-on-open t)
 
   ;; Diff integration with ediff
