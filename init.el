@@ -683,7 +683,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 (use-package gptel
   :pin melpa
   :config
-  (setq gptel-model 'claude-sonnet-4-20250514)
+  (setq gptel-model 'claude-sonnet-4-5-20250929)
   (defun my/get-anthropic-api-key ()
     "Retrieve Anthropic API key from auth-source (1Password)."
     (let ((key (auth-source-pick-first-password
@@ -713,7 +713,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :bind ("s-c" . claude-code-ide-menu)
   :custom
 
-  (claude-code-ide-cli-extra-flags "--model claude-sonnet-4-20250514")
+  (claude-code-ide-cli-extra-flags "--model claude-sonnet-4-5-20250929")
 
   ;; Terminal backend
   (claude-code-ide-terminal-backend 'eat)
