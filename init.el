@@ -361,6 +361,7 @@
   :custom
   (magit-list-refs-sortby "-creatordate")
   (magit-diff-refine-hunk 'all)
+  (magit-log-show-refname-after-summary t)
   :bind (("s-m m" . magit-status)
          ("s-m j" . magit-dispatch)
          ("s-m k" . magit-file-dispatch)
