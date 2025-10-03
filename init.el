@@ -546,6 +546,19 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 
 (use-package wgrep)
 
+(use-package dired
+  :ensure nil
+  :bind
+  (:map dired-mode-map
+        ("C-c C-p" . wdired-change-to-wdired-mode)))
+
+(use-package wdired
+  :ensure nil
+  :custom
+  ;; Allow editing perms bits in wdired
+  (wdired-allow-to-change-permissions t)
+)
+
 (use-package atomic-chrome
   :demand t
   :custom
