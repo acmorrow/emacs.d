@@ -721,6 +721,15 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   ;; Direct keymap approach - unbind M-` from semi-char mode so it falls through to global keymap
   (define-key eat-semi-char-mode-map (kbd "M-`") nil))
 
+;; vterm - alternative terminal backend for claude-code-ide
+(use-package vterm
+  :ensure t
+  :pin melpa
+  :config
+  ;; Allow M-` to fall through to global binding (ns-next-frame)
+  ;; instead of being sent to the terminal
+  (add-to-list 'vterm-keymap-exceptions "M-`"))
+
 (use-package claude-code-ide
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   ;; :ensure-system-package claude-code
@@ -730,7 +739,8 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (claude-code-ide-cli-extra-flags "--model claude-sonnet-4-5-20250929")
 
   ;; Terminal backend
-  (claude-code-ide-terminal-backend 'eat)
+  ;; (claude-code-ide-terminal-backend 'eat)  ; Commented out - trying vterm instead
+  (claude-code-ide-terminal-backend 'vterm)
 
   ;; Window configuration
   (claude-code-ide-use-side-window nil)
