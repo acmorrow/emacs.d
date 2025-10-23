@@ -756,8 +756,29 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 
   :config
   (setenv "ANTHROPIC_API_KEY" (my/get-anthropic-api-key))
+
   ;; Enable Emacs MCP tools for deep integration
-  (claude-code-ide-emacs-tools-setup))
+  (claude-code-ide-emacs-tools-setup)
+
+  ;; Custom MCP tool for LSP formatting
+  (defun my/claude-lsp-format-buffer ()
+    "Format the currently active buffer using LSP formatting."
+    (claude-code-ide-mcp-server-with-session-context nil
+      (if (not (bound-and-true-p lsp-mode))
+          "Error: LSP mode not active in current buffer"
+        (condition-case err
+            (progn
+              (lsp-format-buffer)
+              (save-buffer)
+              (format "Successfully formatted and saved buffer: %s" (buffer-file-name)))
+          (error (format "Error formatting buffer: %s" (error-message-string err)))))))
+
+  (claude-code-ide-make-tool
+   :function #'my/claude-lsp-format-buffer
+   :name "lsp_format_buffer"
+   :description "Format the currently active buffer in Emacs using LSP formatting. Operates on whichever buffer is active in the Emacs session.")
+
+)
 
 
 ;;
