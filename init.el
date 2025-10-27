@@ -761,22 +761,351 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (claude-code-ide-emacs-tools-setup)
 
   ;; Custom MCP tool for LSP formatting
-  (defun my/claude-lsp-format-buffer ()
-    "Format the currently active buffer using LSP formatting."
+  (defun my/claude-lsp-format-buffer (file-path)
+    "Format the specified file using LSP formatting.
+FILE-PATH must be an absolute path to the file to format."
     (claude-code-ide-mcp-server-with-session-context nil
-      (if (not (bound-and-true-p lsp-mode))
-          "Error: LSP mode not active in current buffer"
-        (condition-case err
-            (progn
-              (lsp-format-buffer)
-              (save-buffer)
-              (format "Successfully formatted and saved buffer: %s" (buffer-file-name)))
-          (error (format "Error formatting buffer: %s" (error-message-string err)))))))
+      (let ((target-buffer (or (find-buffer-visiting file-path)
+                               (find-file-noselect file-path))))
+        (if (not target-buffer)
+            (format "Error: Could not open file: %s" file-path)
+          (with-current-buffer target-buffer
+            (if (not (bound-and-true-p lsp-mode))
+                (format "Error: LSP mode not active in buffer for file: %s" file-path)
+              (condition-case err
+                  (progn
+                    (lsp-format-buffer)
+                    (save-buffer)
+                    (format "Successfully formatted and saved: %s" (buffer-file-name)))
+                (error (format "Error formatting %s: %s"
+                              file-path
+                              (error-message-string err))))))))))
 
   (claude-code-ide-make-tool
    :function #'my/claude-lsp-format-buffer
    :name "lsp_format_buffer"
-   :description "Format the currently active buffer in Emacs using LSP formatting. Operates on whichever buffer is active in the Emacs session.")
+   :description "Format a specific file using LSP formatting. Requires an absolute file path."
+   :args '((:name "file_path"
+            :type string
+            :description "Absolute path to the file to format.")))
+
+  ;; Custom MCP tools for reading dir-locals
+  (defun my/claude-read-dir-locals (file-path)
+    "Read effective dir-local variables for FILE-PATH.
+Opens FILE-PATH and returns buffer-local-variables as a Lisp form."
+    (claude-code-ide-mcp-server-with-session-context nil
+      (condition-case err
+          (let ((buffer (find-file-noselect file-path)))
+            (unwind-protect
+                (with-current-buffer buffer
+                  (format "%S" (buffer-local-variables)))
+              (kill-buffer buffer)))
+        (error (format "Error reading dir-locals for %s: %s"
+                      file-path
+                      (error-message-string err))))))
+
+  (defun my/claude-read-project-dir-locals (file-path)
+    "Read effective dir-local variables for the project containing FILE-PATH.
+Finds the project root and delegates to `my/claude-read-dir-locals`."
+    (claude-code-ide-mcp-server-with-session-context nil
+      (condition-case err
+          (let* ((default-directory (file-name-directory file-path))
+                 (project-root (or (projectile-project-root)
+                                  (when-let ((proj (project-current)))
+                                    (project-root proj))
+                                  default-directory))
+                 ;; Use a dummy file in the project root
+                 (probe-file (expand-file-name ".dir-locals-probe" project-root)))
+            (my/claude-read-dir-locals probe-file))
+        (error (format "Error reading project dir-locals: %s" (error-message-string err))))))
+
+  (claude-code-ide-make-tool
+   :function #'my/claude-read-dir-locals
+   :name "read_dir_locals"
+   :description "Read buffer-local variables for a specific file path. Opens the file and returns buffer-local-variables as a Lisp form."
+   :args '((:name "file_path"
+            :type string
+            :description "Absolute path to a file or directory to read buffer-local variables for.")))
+
+  (claude-code-ide-make-tool
+   :function #'my/claude-read-project-dir-locals
+   :name "read_project_dir_locals"
+   :description "Read buffer-local variables for the project root containing a file. Finds the project root via projectile/project.el, then returns buffer-local-variables as a Lisp form."
+   :args '((:name "file_path"
+            :type string
+            :description "Absolute path to any file in the project. Project root will be determined automatically.")))
+
+  ;; Custom MCP tools for projectile task management (split architecture)
+
+  ;; Tool 1: Start a projectile task (non-blocking)
+  (defun my/claude-projectile-task-start (task-type command file-path)
+    "Start a projectile task (compile, test, configure, install, package, run).
+Returns the compilation buffer name for later querying.
+
+TASK-TYPE is one of: compile, test, configure, install, package, run.
+COMMAND is the shell command to execute (required).
+FILE-PATH is used to determine which project to operate on."
+    (claude-code-ide-mcp-server-with-session-context nil
+      ;; Validate projectile-per-project-compilation-buffer is set
+      (if (not projectile-per-project-compilation-buffer)
+          "Error: projectile-per-project-compilation-buffer must be t for safe parallel compilation. Add (setq projectile-per-project-compilation-buffer t) to your Emacs config."
+        ;; Determine project from file-path
+        (let* ((default-directory (file-name-directory file-path))
+               (project-root (projectile-project-root)))
+          (if (not project-root)
+              (format "Error: %s is not in a projectile project" file-path)
+            ;; Determine the task function and command map
+            (let* ((task-info (pcase task-type
+                               ("compile" (cons #'projectile-compile-project projectile-compilation-cmd-map))
+                               ("test" (cons #'projectile-test-project projectile-test-cmd-map))
+                               ("configure" (cons #'projectile-configure-project projectile-configure-cmd-map))
+                               ("install" (cons #'projectile-install-project projectile-install-cmd-map))
+                               ("package" (cons #'projectile-package-project projectile-package-cmd-map))
+                               ("run" (cons #'projectile-run-project projectile-run-cmd-map))
+                               (_ nil)))
+                   (task-function (car task-info))
+                   (command-map (cdr task-info))
+                   (compilation-read-command nil) ;; Disable prompting
+                   (compilation-dir (projectile-compilation-dir)))
+              (if (not task-function)
+                  (format "Error: Unknown task-type '%s'. Must be one of: compile, test, configure, install, package, run" task-type)
+                ;; Cache the command in projectile's map
+                (when command
+                  (puthash compilation-dir command command-map))
+                ;; Compute the buffer name deterministically (respects per-project setting)
+                (let ((buffer-name (projectile-compilation-buffer-name "compilation")))
+                  ;; Call the projectile task function (non-blocking)
+                  (funcall task-function nil)
+                  ;; Return the buffer name for later querying
+                  (format "Started %s in buffer: %s" task-type buffer-name)))))))))
+
+  ;; Tool 2: Query projectile task status and output
+  (defun my/claude-projectile-task-query (buffer-name &optional head-lines tail-lines)
+    "Query the status and output of a compilation buffer.
+
+BUFFER-NAME is the name of the compilation buffer to query.
+Optional HEAD-LINES limits output to first N lines.
+Optional TAIL-LINES limits output to last N lines.
+
+Returns a status string indicating whether compilation is running or finished,
+along with the output if finished."
+    (claude-code-ide-mcp-server-with-session-context nil
+      (let ((buf (get-buffer buffer-name)))
+        (if (not buf)
+            (format "Error: Buffer not found: %s" buffer-name)
+          (with-current-buffer buf
+            (if (memq buf compilation-in-progress)
+                (format "Status: running in buffer %s" buffer-name)
+              ;; Compilation finished - return output
+              (let ((full-output (buffer-substring-no-properties (point-min) (point-max))))
+                (format "Status: finished\n\nOutput:\n%s"
+                        (cond
+                         ;; Limit to first N lines
+                         (head-lines
+                          (string-join (seq-take (split-string full-output "\n") head-lines) "\n"))
+                         ;; Limit to last N lines
+                         (tail-lines
+                          (string-join (seq-take-last (split-string full-output "\n") tail-lines) "\n"))
+                         ;; Return full output
+                         (t full-output))))))))))
+
+  ;; Tool 3: Kill a running projectile task
+  (defun my/claude-projectile-task-kill (buffer-name)
+    "Kill a running compilation in the specified buffer.
+BUFFER-NAME is the name of the compilation buffer to kill.
+Returns a status message."
+    (claude-code-ide-mcp-server-with-session-context nil
+      (let ((buf (get-buffer buffer-name)))
+        (if (not buf)
+            (format "Error: Buffer not found: %s" buffer-name)
+          (with-current-buffer buf
+            (if (not (memq buf compilation-in-progress))
+                (format "No compilation running in buffer: %s" buffer-name)
+              ;; Use compilation-mode's built-in kill function
+              (kill-compilation)
+              (format "Killed compilation in buffer: %s" buffer-name)))))))
+
+  ;; Register the three new tools
+  (claude-code-ide-make-tool
+   :function #'my/claude-projectile-task-start
+   :name "projectile_task_start"
+   :description "Start a projectile task (compile, test, configure, install, package, run) for a project. Non-blocking - returns immediately with the compilation buffer name. Use projectile_task_query to check status and get output. Requires projectile-per-project-compilation-buffer to be enabled."
+   :args '((:name "task_type"
+            :type string
+            :description "The type of projectile task to run: compile, test, configure, install, package, or run")
+           (:name "command"
+            :type string
+            :description "The shell command to execute for this task.")
+           (:name "file_path"
+            :type string
+            :description "Absolute path to a file in the project (used to determine which project to operate on).")))
+
+  (claude-code-ide-make-tool
+   :function #'my/claude-projectile-task-query
+   :name "projectile_task_query"
+   :description "Query the status and output of a compilation buffer. Returns 'running' if still executing, or 'finished' with output if complete. Can be called multiple times to poll for completion."
+   :args '((:name "buffer_name"
+            :type string
+            :description "The name of the compilation buffer to query (returned by projectile_task_start).")
+           (:name "head_lines"
+            :type number
+            :description "Limit output to first N lines (like 'head -n'). Only used when compilation is finished."
+            :optional t)
+           (:name "tail_lines"
+            :type number
+            :description "Limit output to last N lines (like 'tail -n'). Only used when compilation is finished."
+            :optional t)))
+
+  (claude-code-ide-make-tool
+   :function #'my/claude-projectile-task-kill
+   :name "projectile_task_kill"
+   :description "Kill a running compilation in the specified buffer. Equivalent to pressing C-c C-k in the compilation buffer."
+   :args '((:name "buffer_name"
+            :type string
+            :description "The name of the compilation buffer to kill.")))
+
+  ;; Custom MCP tools for Emacs introspection
+  (defun my/claude-emacs-describe (name type)
+    "Describe an Emacs symbol/mode/package.
+NAME is the symbol name as a string.
+TYPE is one of: function, variable, mode, package, symbol."
+    (claude-code-ide-mcp-server-with-session-context nil
+      (condition-case err
+          (let* ((symbol (intern name))
+                 (temp-buf (generate-new-buffer " *temp-help*")))
+            (unwind-protect
+                (save-window-excursion
+                  (cl-letf (((symbol-function 'help-buffer)
+                             (lambda () temp-buf)))
+                    (pcase type
+                      ("function" (describe-function symbol))
+                      ("variable" (describe-variable symbol))
+                      ("mode" (describe-function symbol))
+                      ("package" (describe-package symbol))
+                      ("symbol" (describe-symbol symbol))
+                      (_ (error "Unknown type '%s'. Must be one of: function, variable, mode, package, symbol" type))))
+                  (with-current-buffer temp-buf
+                    (buffer-string)))
+              (when (buffer-live-p temp-buf)
+                (kill-buffer temp-buf))))
+        (error (format "Error describing %s: %s" name (error-message-string err))))))
+
+  (defun my/claude-emacs-apropos (pattern)
+    "Search for all Emacs symbols matching PATTERN."
+    (claude-code-ide-mcp-server-with-session-context nil
+      (condition-case err
+          (save-window-excursion
+            (let ((show-all t))
+              (apropos pattern show-all)
+              ;; Capture content from *Apropos* buffer
+              (with-current-buffer "*Apropos*"
+                (prog1 (buffer-string)
+                  (kill-buffer)))))
+        (error (format "Error running apropos: %s" (error-message-string err))))))
+
+  (defun my/claude-emacs-apropos-command (pattern)
+    "Search for interactive Emacs commands matching PATTERN."
+    (claude-code-ide-mcp-server-with-session-context nil
+      (condition-case err
+          (save-window-excursion
+            (apropos-command pattern t)
+            ;; Capture content from *Apropos* buffer
+            (with-current-buffer "*Apropos*"
+              (prog1 (buffer-string)
+                (kill-buffer))))
+        (error (format "Error running apropos-command: %s" (error-message-string err))))))
+
+  (defun my/claude-emacs-apropos-documentation (pattern)
+    "Search Emacs documentation for PATTERN."
+    (claude-code-ide-mcp-server-with-session-context nil
+      (condition-case err
+          (save-window-excursion
+            (apropos-documentation pattern)
+            ;; Capture content from *Apropos* buffer
+            (with-current-buffer "*Apropos*"
+              (prog1 (buffer-string)
+                (kill-buffer))))
+        (error (format "Error running apropos-documentation: %s" (error-message-string err))))))
+
+  (claude-code-ide-make-tool
+   :function #'my/claude-emacs-describe
+   :name "emacs_describe"
+   :description "Get documentation for an Emacs symbol. Returns docstring, current value (for variables), arguments (for functions), and other metadata from the running Emacs session."
+   :args '((:name "name"
+            :type string
+            :description "The name of the symbol to describe (e.g., 'projectile-compile-project', 'lsp-mode').")
+           (:name "type"
+            :type string
+            :description "The type of thing to describe: function, variable, mode, package, or symbol. Use 'symbol' for a unified view of all aspects.")))
+
+  (claude-code-ide-make-tool
+   :function #'my/claude-emacs-apropos
+   :name "emacs_apropos"
+   :description "Search for all Emacs symbols (functions, variables, faces, etc.) matching a pattern. Use for broad exploration."
+   :args '((:name "pattern"
+            :type string
+            :description "Search pattern (regexp) to match symbol names.")))
+
+  (claude-code-ide-make-tool
+   :function #'my/claude-emacs-apropos-command
+   :name "emacs_apropos_command"
+   :description "Search for interactive Emacs commands (callable via M-x) matching a pattern. More focused than emacs_apropos - only returns commands users can invoke."
+   :args '((:name "pattern"
+            :type string
+            :description "Search pattern (regexp) to match command names.")))
+
+  (claude-code-ide-make-tool
+   :function #'my/claude-emacs-apropos-documentation
+   :name "emacs_apropos_documentation"
+   :description "Search Emacs documentation text for a pattern. Finds functions/variables whose docstrings contain the pattern. Use for concept-based search (e.g., 'buffer naming', 'code formatting')."
+   :args '((:name "pattern"
+            :type string
+            :description "Search pattern (regexp) to match in documentation text.")))
+
+  ;; lsp-describe-thing-at-point wrapper (returns hover info as string)
+  (defun my/claude-lsp-describe-thing-at-point (file-path line column)
+    "Get LSP hover information at FILE-PATH:LINE:COLUMN.
+Returns formatted hover text including type signature and documentation.
+LINE is 1-based, COLUMN is 0-based (Emacs conventions)."
+    (if (not file-path)
+        (error "file_path parameter is required")
+      (claude-code-ide-mcp-server-with-session-context nil
+        (let ((target-buffer (or (find-buffer-visiting file-path)
+                                 (find-file-noselect file-path))))
+          (with-current-buffer target-buffer
+            (condition-case err
+                (save-excursion
+                  ;; Position at the specified location
+                  (goto-line line)
+                  (move-to-column column)
+                  ;; Get hover contents from LSP
+                  (let ((contents (-some->> (lsp--text-document-position-params)
+                                    (lsp--make-request "textDocument/hover")
+                                    (lsp--send-request)
+                                    (lsp:hover-contents))))
+                    (if (and contents (not (equal contents "")))
+                        ;; Render the hover content as text (same as lsp--display-contents does)
+                        (mapconcat 'string-trim-right
+                                   (split-string (lsp--render-on-hover-content contents t) "\n")
+                                   "\n")
+                      (format "No hover information at %s:%d:%d" file-path line column))))
+              (error
+               (format "Error getting hover info at %s:%d:%d: %s"
+                       file-path line column (error-message-string err)))))))))
+
+  (claude-code-ide-make-tool
+   :function #'my/claude-lsp-describe-thing-at-point
+   :name "lsp_describe_thing_at_point"
+   :description "Get LSP hover information (type signature and documentation) at a specific location. Returns formatted text with type, parameters, and docstring."
+   :args '((:name "file_path"
+            :type string
+            :description "Absolute path to the file.")
+           (:name "line"
+            :type number
+            :description "Line number (1-based).")
+           (:name "column"
+            :type number
+            :description "Column number (0-based).")))
 
 )
 
