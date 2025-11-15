@@ -89,6 +89,9 @@
   ;; Go to where things already are
   (display-buffer-base-action '(display-buffer-reuse-window (reusable-frames . visible)))
 
+  ;; Use pop-to-buffer for emacsclient buffers so they don't replace the current window
+  (server-window 'pop-to-buffer)
+
   :config
   ;; Toolbar/scrollbar is a waste of space
   (when (fboundp 'tool-bar-mode)
