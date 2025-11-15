@@ -719,19 +719,17 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 (use-package eat
   :vc (:url "https://codeberg.org/akib/emacs-eat" :rev :newest)
   :demand
-  :config
-  ;; Allow M-` to have the window cycling behavior we bound above.
-  ;; Direct keymap approach - unbind M-` from semi-char mode so it falls through to global keymap
-  (define-key eat-semi-char-mode-map (kbd "M-`") nil))
+  :bind (:map eat-semi-char-mode-map
+              ;; Unbind M-` so it falls through to global binding (ns-next-frame)
+              ("M-`" . nil)))
 
 ;; vterm - alternative terminal backend for claude-code-ide
 (use-package vterm
   :ensure t
   :pin melpa
-  :config
-  ;; Allow M-` to fall through to global binding (ns-next-frame)
-  ;; instead of being sent to the terminal
-  (add-to-list 'vterm-keymap-exceptions "M-`"))
+  :bind (:map vterm-mode-map
+              ;; Unbind M-` so it falls through to global binding (ns-next-frame)
+              ("M-`" . nil)))
 
 (use-package claude-code-ide
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
