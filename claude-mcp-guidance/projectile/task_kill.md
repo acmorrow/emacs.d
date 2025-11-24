@@ -1,0 +1,3 @@
+- **`claude-code-ide-extras-projectile/task_kill(buffer_name)`** - Cancel running task
+  - Equivalent to C-c C-k in compilation buffer
+  - Use when: User requests cancellation, or you realize you started wrong operation

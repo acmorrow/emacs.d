@@ -1,0 +1,10 @@
+- **`claude-code-ide-extras-projectile/task_query(buffer_name, start_line?, num_lines?)`** - Retrieve compilation output
+  - **ONLY call after task_wait reports "finished"**
+  - Returns the compilation output (full or limited)
+  - Without limits: returns full output (use for small outputs)
+  - With `start_line` and `num_lines` (both required together): returns specific line range
+  - `start_line` is 1-based; negative values count from end (-100 = 100th line from end)
+  - **Examples**:
+    - First 100 lines: `task_query(buffer, 1, 100)`
+    - Last 100 lines: `task_query(buffer, -100, 100)`
+    - Lines 500-600: `task_query(buffer, 500, 100)`

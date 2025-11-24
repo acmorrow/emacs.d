@@ -1,0 +1,6 @@
+- **`claude-code-ide-extras-projectile/read_project_dir_locals(file_path)`** - Read Emacs dir-local variables for the project root
+  - Finds the project root containing the file, then reads project-level dir-local variables
+  - Shows how user actually builds/tests/configures this project
+  - Returns projectile commands, LSP settings, mode configurations
+  - **Key insight**: These are templates showing PATTERNS - understand the pattern, craft variations as needed
+  - Use before: Running builds, tests, or any project-specific commands

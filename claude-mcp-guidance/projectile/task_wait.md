@@ -1,0 +1,9 @@
+- **`claude-code-ide-extras-projectile/task_wait(buffer_name)`** - Poll for completion and get output size
+  - **ALWAYS call this after task_start** before retrieving output
+  - Returns "Status: running" while executing
+  - Returns "Status: finished\n\nOutput size:\n  Lines: N\n  Characters: M" when done
+  - Poll with backoff until status is "finished"
+  - **Use the size info** to decide whether to fetch full output or use head/tail limiting:
+    - Small output (<500 lines): fetch full output with `task_query`
+    - Large output (>500 lines): use `task_query` with `head_lines` or `tail_lines` to limit
+  - **Example**: If you see "Lines: 5000", don't try to fetch all 5000 lines - use head/tail

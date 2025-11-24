@@ -1,0 +1,2 @@
+- **`claude-code-ide-extras-emacs/apropos_command(pattern)`** - Search interactive commands only
+  - Use for: Discovering APIs, exploring unfamiliar packages

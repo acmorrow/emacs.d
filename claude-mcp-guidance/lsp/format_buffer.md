@@ -1,0 +1,3 @@
+- **`claude-code-ide-extras-lsp/format_buffer(file_path)`** - Format file with LSP
+  - **REQUIRED**: Always format after edits, before user sees changes (per C++ style guidelines)
+  - Can format multiple files in parallel

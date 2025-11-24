@@ -1,0 +1,4 @@
+- **`claude-code-ide-extras-emacs/read_dir_locals(file_path)`** - Read Emacs dir-local variables for a specific file
+  - Reads buffer-local variables effective for the specific file provided
+  - Returns all effective dir-local settings for that file
+  - Use when: Need to see configuration for a specific file, which may differ from project-wide settings

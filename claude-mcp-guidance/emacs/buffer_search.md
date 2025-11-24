@@ -1,0 +1,8 @@
+- **`claude-code-ide-extras-emacs/buffer_search(buffer_name, pattern, context_lines?)`** - Search any buffer
+  - Search any Emacs buffer for regex patterns with optional context
+  - Works on any buffer: compilation, scratch, messages, apropos results, etc.
+  - Returns matching lines with context
+  - **Use cases**:
+    - Search scratch buffer for TODOs: `buffer_search("*scratch*", "TODO")`
+    - Find errors in messages: `buffer_search("*Messages*", "error:", 2)`
+    - Search previous apropos results if buffer wasn't killed

@@ -1,0 +1,4 @@
+- **`claude-code-ide-extras-emacs/describe(name, type)`** - Get documentation for Emacs symbols
+  - `type`: function, variable, mode, package, symbol
+  - Returns docstring, current value, arguments from user's live session
+  - Use when: Need to understand how Emacs/packages work in THIS session

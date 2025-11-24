@@ -1,0 +1,2 @@
+- **`claude-code-ide-extras-emacs/apropos_documentation(pattern)`** - Search docstring content
+  - Use for: Discovering APIs, exploring unfamiliar packages

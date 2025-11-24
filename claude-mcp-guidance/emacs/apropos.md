@@ -1,0 +1,2 @@
+- **`claude-code-ide-extras-emacs/apropos(pattern)`** - Search all Emacs symbols by name
+  - Use for: Discovering APIs, exploring unfamiliar packages

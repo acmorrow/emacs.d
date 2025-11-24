@@ -1,0 +1,11 @@
+- **`claude-code-ide-extras-emacs/buffer_query(buffer_name, start_line?, num_lines?)`** - Read any buffer contents
+  - Read contents from any Emacs buffer (compilation, scratch, messages, etc.)
+  - Without limits: returns full buffer
+  - With `start_line` and `num_lines` (both required): returns specific line range
+  - `start_line` is 1-based; negative values count from end
+  - Lines longer than configured maximum (default 2000 chars) are truncated
+  - **Use cases**:
+    - Read scratch buffer: `buffer_query("*scratch*")`
+    - Check message log: `buffer_query("*Messages*", -50, 50)` (last 50 lines)
+    - Pagination: `buffer_query("*compilation*", 101, 100)` (next 100 lines)
+  - **Note**: Can read any buffer, not just compilation - enables scratch buffer collaboration

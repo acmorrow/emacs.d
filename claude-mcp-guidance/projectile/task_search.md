@@ -1,0 +1,12 @@
+- **`claude-code-ide-extras-projectile/task_search(buffer_name, pattern, context_lines?)`** - Search compilation output
+  - Search for specific patterns in compilation/test output without retrieving full buffer
+  - `pattern`: Regular expression to search for (e.g., `error:|warning:|failed`)
+  - `context_lines`: Optional number of lines before/after each match (default 0)
+  - Returns matching lines with context
+  - **Use cases**:
+    - Find specific errors in large build output: `task_search(buffer, "error:", 2)`
+    - Check for warnings: `task_search(buffer, "warning:")`
+    - Find test failures: `task_search(buffer, "FAILED|failed")`
+    - Find specific debugging output that was added to a test while diagnosing a failure: `task_search(buffer, "DEBUG: frob returned false!")`
+  - **When to use**: When output is large (>500 lines) and you need specific information
+  - **Example workflow**: After build fails, search for "error:" instead of retrieving full output

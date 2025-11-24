@@ -1,0 +1,3 @@
+- **`claude-code-ide-extras-meta/get_mcp_custom_advice()`** - Get project-specific guidance for using MCP tools
+  - Reads customization variables (set via :custom or .dir-locals.el) that provide context about how to use the tools in this project
+  - Call this at the start of a session to learn how the user wants to make use of the loaded claude-code-ide-extras MCPs
