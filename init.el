@@ -92,6 +92,12 @@
   ;; Use pop-to-buffer for emacsclient buffers so they don't replace the current window
   (server-window 'pop-to-buffer)
 
+  ;; Works better with nested C++ namespaces
+  (imenu-flatten 'prefix)
+
+  ;; Why not
+  (imenu-auto-rescan t)
+
   :config
   ;; Toolbar/scrollbar is a waste of space
   (when (fboundp 'tool-bar-mode)
@@ -125,6 +131,9 @@
   ;; global line numbers
   (global-display-line-numbers-mode +1)
 
+  ;; Enable repeat mode
+  (repeat-mode +1)
+
   ;; Inconsolata-16 as the default
   ;; TODO: Can this go into the `solarized` use-pacakge below?
   (add-to-list 'default-frame-alist '(font . "Inconsolata-16"))
@@ -132,7 +141,8 @@
   ;; On macOS, this key is used to cycle windows of the current
   ;; app. So, arrange to let it do so for our frames as well.
   :bind (("M-`" . ns-next-frame)
-         ("M-/" . completion-at-point)))
+         ("M-/" . completion-at-point)
+         ([remap list-buffers] . 'ibuffer)))
 
 
 ;;
@@ -268,7 +278,9 @@
   :after (consult projectile)
   :bind
   (:map projectile-mode-map
-        ("s-p f" . consult-projectile)))
+        ;; It'd be better to use remap here, but I can't get it to work
+        ("s-p f" . consult-projectile)
+        ("s-p b" . consult-projectile-switch-to-buffer)))
 
 (use-package marginalia
   :init
@@ -378,6 +390,7 @@
               ("s-p" . projectile-command-map))
   :custom
   (projectile-per-project-compilation-buffer t)
+  (projectile-switch-project-action 'projectile-vc)
   (compilation-save-buffers-predicate
    (lambda ()
      (and (buffer-file-name)
