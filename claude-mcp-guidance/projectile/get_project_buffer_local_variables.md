@@ -1,0 +1,6 @@
+- **`claude-code-ide-extras-projectile/get_project_buffer_local_variables(file_path, filter_regex?)`** - Get project-level variables with values
+  - Returns Lisp alist from project root context
+  - `filter_regex`: Optional Emacs regex to filter
+  - **Primary use case**: Getting build/test patterns: `filter_regex="^projectile-project-"` → all task commands
+  - **Always filter**: Unfiltered returns massive dump - use discovery pattern (keys first, then filtered values)
+  - **Example**: `get_project_buffer_local_variables(file, "^projectile-project-compilation-cmd$")` → build command

@@ -1,0 +1,5 @@
+- **`claude-code-ide-extras-emacs/eval_defun_at_point(buffer_name, line, column)`** - Reload single function definition
+  - Use for: Iterative development - modify function, immediately reload it
+  - Position doesn't need to be exact - anywhere within the defun works
+  - Lines 1-based, columns 0-based
+  - **Preferred over eval_region** when reloading just one function

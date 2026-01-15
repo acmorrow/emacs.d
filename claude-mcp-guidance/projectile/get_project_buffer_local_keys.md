@@ -1,0 +1,6 @@
+- **`claude-code-ide-extras-projectile/get_project_buffer_local_keys(file_path, filter_regex?)`** - List project-level buffer-local variable names
+  - Returns newline-separated variable names from project root context
+  - `filter_regex`: Optional Emacs regex (e.g., `"^projectile-project-"`)
+  - **Use for**: Discovering project-wide configuration (projectile tasks, LSP settings)
+  - **Lightweight**: ~75 variables from project root vs ~270 from file buffer
+  - **Example**: `get_project_buffer_local_keys(file, "^projectile-project-.*-cmd$")` → compile, test, configure, install

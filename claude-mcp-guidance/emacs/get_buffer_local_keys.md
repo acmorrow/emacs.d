@@ -1,0 +1,7 @@
+- **`claude-code-ide-extras-emacs/get_buffer_local_keys(file_path, filter_regex?)`** - List buffer-local variable names
+  - Returns newline-separated variable names (alphabetically sorted)
+  - `filter_regex`: Optional Emacs regex to filter names (e.g., `"^projectile-"`, `"^\\(buffer-\\|major-mode\\)"`)
+  - **Lightweight discovery**: ~200-400 bytes vs 70KB+ unfiltered dump
+  - **Use for**: Discovering what variables exist before retrieving values
+  - **Pattern**: Get keys first (cheap), then use `get_buffer_local_variables` with filter (targeted)
+  - **Example**: `get_buffer_local_keys(file, "^lsp-")` → see all LSP-related variables

@@ -1,0 +1,5 @@
+- **`claude-code-ide-extras-emacs/select_region(buffer_name, start_line, start_column, end_line, end_column)`** - Select region in buffer
+  - Sets mark and point, activates region
+  - Lines 1-based, columns 0-based
+  - **Use with eval_elisp**: Call region commands like `(comment-region (region-beginning) (region-end))`
+  - Example: Select then `eval_elisp("(indent-region (region-beginning) (region-end))")`

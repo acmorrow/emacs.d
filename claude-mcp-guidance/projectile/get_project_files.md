@@ -1,0 +1,11 @@
+- **`claude-code-ide-extras-projectile/get_project_files()`** - Enumerate all project files
+  - No parameters - uses current project from session context
+  - Returns list of relative paths (relative to project root)
+  - **Why use this**: Fast (projectile cache), respects ignore rules (.gitignore, .projectile)
+  - **Use when**: Need complete file inventory, batch operations, project structure discovery
+  - **Better than bash find**: Automatically excludes ignored files, uses cached data
+  - **Typical workflows**:
+    - Find all test files → filter list → read specific ones
+    - Discover project structure before implementing features
+    - Batch format/check operations across multiple files
+  - **Not for**: Finding files by content (use search) or by name pattern (use Glob)

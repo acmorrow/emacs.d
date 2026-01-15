@@ -1,0 +1,5 @@
+- **`claude-code-ide-extras-emacs/position_point(buffer_name, action, line, column, token?)`** - Save/restore point position
+  - `action="set"`: Move to line:column, return token (lines 1-based, columns 0-based)
+  - `action="restore"`: Return to saved position using token
+  - **Use for**: Workflows like: set → describe_thing_at_point → restore
+  - Markers track buffer changes - restoration works even after edits

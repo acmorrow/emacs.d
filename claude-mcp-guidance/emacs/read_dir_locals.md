@@ -1,4 +1,4 @@
 - **`claude-code-ide-extras-emacs/read_dir_locals(file_path)`** - Read Emacs dir-local variables for a specific file
-  - Reads buffer-local variables effective for the specific file provided
-  - Returns all effective dir-local settings for that file
-  - Use when: Need to see configuration for a specific file, which may differ from project-wide settings
+  - **Deprecated**: Use `get_buffer_local_keys` (discovery) + `get_buffer_local_variables` (filtered retrieval) instead
+  - Returns ALL buffer-local variables (70KB+ unfiltered) - context expensive
+  - Still functional (delegates to `get_buffer_local_variables` without filter) but avoid unless debugging

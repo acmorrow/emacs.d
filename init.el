@@ -788,11 +788,14 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
           (string-trim (buffer-string)))
       (format "TODO: Create guidance file at %s" path))))
 
-;; Configure individual packages with custom tool usage guidance
-(use-package claude-code-ide-extras-projectile
-  :after (projectile claude-code-ide)
+;; Claude Code IDE Extras - Additional MCP tools
+(use-package claude-code-ide-extras
+  :vc (:url "https://github.com/acmorrow/claude-code-ide-extras"
+       :rev "0.0.4")
+  :after (projectile lsp-mode claude-code-ide)
   :demand t
   :custom
+  ;; Projectile tool customizations
   (claude-code-ide-extras-projectile-task-start-usage-prompt
    (my/load-mcp-guidance "projectile/task_start.md"))
   (claude-code-ide-extras-projectile-task-wait-usage-prompt
@@ -805,24 +808,20 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
    (my/load-mcp-guidance "projectile/task_kill.md"))
   (claude-code-ide-extras-projectile-read-project-dir-locals-usage-prompt
    (my/load-mcp-guidance "projectile/read_project_dir_locals.md"))
-  :config
-  (claude-code-ide-extras-projectile-setup))
+  (claude-code-ide-extras-projectile-get-project-files-usage-prompt
+   (my/load-mcp-guidance "projectile/get_project_files.md"))
+  (claude-code-ide-extras-projectile-get-project-buffer-local-keys-usage-prompt
+   (my/load-mcp-guidance "projectile/get_project_buffer_local_keys.md"))
+  (claude-code-ide-extras-projectile-get-project-buffer-local-variables-usage-prompt
+   (my/load-mcp-guidance "projectile/get_project_buffer_local_variables.md"))
 
-(use-package claude-code-ide-extras-lsp
-  :after (lsp-mode claude-code-ide)
-  :demand t
-  :custom
+  ;; LSP tool customizations
   (claude-code-ide-extras-lsp-format-buffer-usage-prompt
    (my/load-mcp-guidance "lsp/format_buffer.md"))
   (claude-code-ide-extras-lsp-describe-thing-at-point-usage-prompt
    (my/load-mcp-guidance "lsp/describe_thing_at_point.md"))
-  :config
-  (claude-code-ide-extras-lsp-setup))
 
-(use-package claude-code-ide-extras-emacs
-  :after (claude-code-ide)
-  :demand t
-  :custom
+  ;; Emacs tool customizations
   (claude-code-ide-extras-emacs-describe-usage-prompt
    (my/load-mcp-guidance "emacs/describe.md"))
   (claude-code-ide-extras-emacs-apropos-usage-prompt
@@ -837,24 +836,33 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
    (my/load-mcp-guidance "emacs/buffer_search.md"))
   (claude-code-ide-extras-emacs-read-dir-locals-usage-prompt
    (my/load-mcp-guidance "emacs/read_dir_locals.md"))
-  :config
-  (claude-code-ide-extras-emacs-setup))
+  (claude-code-ide-extras-emacs-get-buffer-local-keys-usage-prompt
+   (my/load-mcp-guidance "emacs/get_buffer_local_keys.md"))
+  (claude-code-ide-extras-emacs-get-buffer-local-variables-usage-prompt
+   (my/load-mcp-guidance "emacs/get_buffer_local_variables.md"))
+  (claude-code-ide-extras-emacs-eval-elisp-usage-prompt
+   (my/load-mcp-guidance "emacs/eval_elisp.md"))
+  (claude-code-ide-extras-emacs-eval-region-usage-prompt
+   (my/load-mcp-guidance "emacs/eval_region.md"))
+  (claude-code-ide-extras-emacs-eval-defun-at-point-usage-prompt
+   (my/load-mcp-guidance "emacs/eval_defun_at_point.md"))
+  (claude-code-ide-extras-emacs-find-file-usage-prompt
+   (my/load-mcp-guidance "emacs/find_file.md"))
+  (claude-code-ide-extras-emacs-position-point-usage-prompt
+   (my/load-mcp-guidance "emacs/position_point.md"))
+  (claude-code-ide-extras-emacs-select-region-usage-prompt
+   (my/load-mcp-guidance "emacs/select_region.md"))
+  (claude-code-ide-extras-emacs-xref-find-definitions-at-point-usage-prompt
+   (my/load-mcp-guidance "emacs/xref_find_definitions_at_point.md"))
+  (claude-code-ide-extras-emacs-xref-find-references-at-point-usage-prompt
+   (my/load-mcp-guidance "emacs/xref_find_references_at_point.md"))
 
-(use-package claude-code-ide-extras-meta
-  :after (claude-code-ide)
-  :demand t
-  :custom
+  ;; Meta tool customizations
   (claude-code-ide-extras-meta-get-mcp-custom-advice-header
    (my/load-mcp-guidance "meta/header.md"))
   (claude-code-ide-extras-meta-get-mcp-custom-advice-usage-prompt
    (my/load-mcp-guidance "meta/get_mcp_custom_advice.md"))
-  :config
-  (claude-code-ide-extras-meta-setup))
 
-;; Load and setup the meta-package (depends on individual packages)
-(use-package claude-code-ide-extras
-  :after (projectile lsp-mode claude-code-ide)
-  :demand t
   :config
   (claude-code-ide-extras-setup))
 

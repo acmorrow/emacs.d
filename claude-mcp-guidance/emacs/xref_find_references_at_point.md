@@ -1,0 +1,9 @@
+- **`claude-code-ide-extras-emacs/xref_find_references_at_point(file_path, line, column)`** - Find all usages from definition location
+  - Takes explicit coordinates (line 1-based, column 0-based)
+  - Positions point to establish semantic context before querying xref backend
+  - **Why point-based**: Correctly distinguishes overloaded names, template specializations, shadowed symbols
+  - Returns list of all usage locations: "file:line: summary"
+  - **Use when**: Found definition (via imenu/grep/reading), want to see all call sites
+  - **Typical workflow**: imenu shows functions → pick one → find all usages to understand impact
+  - **Critical for**: Refactoring (see all affected sites), understanding code flow, impact analysis
+  - **Not for**: Finding definitions (use xref_find_definitions_at_point)

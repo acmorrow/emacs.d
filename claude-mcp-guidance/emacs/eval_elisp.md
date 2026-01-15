@@ -1,0 +1,5 @@
+- **`claude-code-ide-extras-emacs/eval_elisp(code)`** - Execute elisp and return result
+  - Use for: Testing expressions, exploring state, getting values
+  - Returns formatted result via %S
+  - Example: `eval_elisp("(buffer-list)")` returns list of buffers
+  - **Not for**: Reloading function definitions (use eval_defun_at_point or eval_region)

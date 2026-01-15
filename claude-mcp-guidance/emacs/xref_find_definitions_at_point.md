@@ -1,0 +1,8 @@
+- **`claude-code-ide-extras-emacs/xref_find_definitions_at_point(file_path, line, column)`** - Find definition from usage location
+  - Takes explicit coordinates (line 1-based, column 0-based)
+  - Positions point to establish semantic context before querying xref backend
+  - **Why point-based**: Disambiguates overloads, resolves namespaces, handles template specializations
+  - Returns list of definition locations: "file:line: summary"
+  - **Use when**: Reading code, encounter symbol usage, want to see its declaration/definition
+  - **Typical workflow**: Read file → see `foo.bar()` → find definition to understand what `bar` does
+  - **Not for**: Pattern searches across project (use xref_find_apropos instead)

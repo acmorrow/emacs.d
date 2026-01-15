@@ -1,0 +1,5 @@
+- **`claude-code-ide-extras-emacs/eval_region(buffer_name, start_line, start_column, end_line, end_column)`** - Evaluate region for side effects
+  - Use for: Reloading multiple function definitions from edited code
+  - Does NOT return values - evaluates for side effects only
+  - Lines 1-based, columns 0-based
+  - **Use eval_elisp instead when**: You need the result of a computation

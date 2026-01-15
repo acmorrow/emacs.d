@@ -1,0 +1,7 @@
+- **`claude-code-ide-extras-emacs/get_buffer_local_variables(file_path, filter_regex?)`** - Get buffer-local variables with values
+  - Returns Lisp alist: `((var-name . value) ...)`
+  - `filter_regex`: Optional Emacs regex to filter (e.g., `"^buffer-file-name$"`, `"^projectile-project-.*-cmd$"`)
+  - **IMPORTANT**: Without filter, returns 70KB+ of mostly irrelevant runtime state - context poison
+  - **Always filter** unless debugging: `"^projectile-project-"` → ~500 bytes vs 70KB unfiltered
+  - **Use for**: Getting specific variables after discovering with `get_buffer_local_keys`
+  - **Example**: `get_buffer_local_variables(file, "^default-directory$")` → `((default-directory . "/path/to/dir"))`
