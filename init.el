@@ -204,6 +204,16 @@
   :custom
   (enable-recursive-minibuffers t))
 
+(use-package vertico-directory
+  :after vertico
+  :ensure nil
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
+  :bind
+  (:map vertico-map
+        ("RET" . vertico-directory-enter)
+        ("DEL" . vertico-directory-delete-char)
+        ("M-DEL" . vertico-directory-delete-word)))
+
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
