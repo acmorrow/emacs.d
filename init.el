@@ -141,6 +141,7 @@
   ;; On macOS, this key is used to cycle windows of the current
   ;; app. So, arrange to let it do so for our frames as well.
   :bind (("M-`" . ns-next-frame)
+         ("M-~" . ns-prev-frame)
          ("M-/" . completion-at-point)
          ([remap list-buffers] . 'ibuffer)))
 
