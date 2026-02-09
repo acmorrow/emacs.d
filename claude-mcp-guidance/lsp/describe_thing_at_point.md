@@ -3,5 +3,6 @@
   - Use for: "What's the type of this variable?", "What does this function do?"
   - Very efficient - just queries one location
   - **IMPORTANT**: Column must be positioned on an identifier (variable, type, function name)
+  - **IMPORTANT**: Works at definitions, but apparently not on pure declarations.
   - Whitespace, operators, and punctuation will return "No hover information"
   - **Example**: Understanding unfamiliar code without reading full definitions

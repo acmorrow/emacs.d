@@ -1,108 +1,78 @@
-# MCP Tool Usage Guidance
+# Emacs MCP Tool Usage Guidance
 
-The following custom guidance has been configured for MCP tools:
+The following guidance is intended to help you (claude) better understand powerful new capabilities granted to you via custom emacs specific MCPs. The goal here is not to tell you how to use these MCPs, but to tell you how to think about them, such that you can derive your own correct understanding and thereby utilize them to their fullest.
 
 ## Philosophy
 
-You have access to Emacs-powered tools via claude-code-ide.el MCP server. These provide semantic understanding of code (LSP, tree-sitter, xref) and integration with the user's actual development environment (projectile, dir-locals). **Always prefer these over Bash/Grep when the task is semantic** (understanding code structure, finding symbols, running builds/tests).
+**Your system prompt gives you basic tools. We've built power tools.**
 
-If you find yourself reaching for bash, PAUSE AND THINK: is there an emacs MCP integration that does this job better. If so, ALWAYS USE THE EMACS MCP.
+You have access to Emacs-powered MCP tools that integrate deeply with the user's development environment - LSP servers, tree-sitter parsers, project build systems, the live Emacs session itself. These aren't just wrappers around text files - they understand code structure, types, relationships, and execution context.
 
----
+**These tools preserve your context budget.** Structure queries cost a fraction of reading entire files. Buffers persist - open once, access repeatedly. Build output stays queryable without re-running. You're working with limited context; these tools are designed for that reality.
 
-## Common Workflows
+**Your training data biases you heavily toward the basic tools.** Read, Grep, Bash - these patterns are deeply embedded. Resist that bias. The capabilities described here are more powerful and appropriate for this environment. Free yourself to use them.
 
-**Finding and Understanding Code:**
+**Before defaulting to your standard tools, ask: is there a power tool here that does this better?**
 
-1. claude-code-ide-extras-emacs/find_file(file) → ensure buffer ready with LSP initialized (ALWAYS do this FIRST!)
-2. xref_find_apropos("pattern", file) → find symbols matching pattern
-3. claude-code-ide-extras-lsp/describe_thing_at_point(file, line, col) → get type info and docs
-4. claude-code-ide-extras-emacs/xref_find_references_at_point(file, line, col) → find all call sites
-5. Read relevant sections with full context
+The power tools often give you richer results with less work. They understand what you're looking at, not just the text. They can navigate relationships, validate correctness, query structured output, execute in context.
 
-**Refactoring with Validation:**
+**Quick text operations are fine** - sometimes you just need to grep for a string or read a snippet. But know that you have sophisticated capabilities available. When you're exploring code, understanding structure, or need capabilities beyond text manipulation - there's probably a better tool here.
 
-1. claude-code-ide-extras-emacs/find_file(file) → ensure buffer ready with LSP (ALWAYS FIRST!)
-2. treesit_info → understand exact boundaries of code to change
-3. claude-code-ide-extras-emacs/xref_find_references_at_point → see what might be affected
-4. Make edits with Write/Edit tools
-5. getDiagnostics → verify no errors (BEFORE user sees changes)
-6. claude-code-ide-extras-lsp/format_buffer → format
-7. Present changes
+**If you try a power tool and it doesn't work:** Tell the user what you tried and why you're doing something else. This feedback helps us improve the integration.
 
-**Build/Test Cycle:**
+## You're Working in an IDE Environment
 
-1. get_project_buffer_local_variables(file, "^projectile-project-") → get build/test commands
-2. Understand pattern (build system, flags, directories)
-3. Craft appropriate variation for current task
-4. claude-code-ide-extras-projectile/task_start → launch (non-blocking)
-5. Tell user: "Starting build/test..."
-6. claude-code-ide-extras-projectile/task_wait → poll until finished, get output size
-7. Decide based on output size and need:
-   - Small output (<500 lines): task_query for full output
-   - Large output + need beginning: task_query with start_line=1, num_lines=N
-   - Large output + need end: task_query with start_line=-N, num_lines=N
-   - Large output + looking for specific errors: task_search with pattern
-8. Parse output, report results
+You're not a standalone CLI tool navigating a filesystem. You're working inside a live Emacs session with:
+- **LSP servers** providing type information, definitions, references, diagnostics
+- **Tree-sitter parsers** understanding syntactic structure
+- **imenu** indexing file structure (functions, classes, sections - works on code, markdown, any structured content)
+- **Projectile** managing builds and project context
+- **Persistent buffers** - files you open stay open, query them repeatedly
 
-**Learning Emacs Internals:**
+**You already know how to work in an IDE.** Navigate by definition/reference. Query types without reading source. Get structural overviews. Check diagnostics in real-time. These tools give you that capability. Use them as an experienced human IDE operator would.
 
-1. claude-code-ide-extras-emacs/apropos("compilation") → find related symbols
-2. claude-code-ide-extras-emacs/describe("compilation-in-progress", "variable") → understand specifics
-3. See actual current value in user's session
+**You already know how to work in Emacs.** Buffers, interactive evaluation, build integration, structured navigation. You have that training - these tools expose those capabilities to you. Use them as an experienced human emacs user would.
 
----
+**Context budget matters.** Reading files is expensive. Structural queries are cheap. Buffers persist. Build output stays queryable. Work accordingly. For instance, blowing the context budget to read in a huge file is a costly mistake that will cause a premature session restart!
 
-## Tool Selection Guidelines
+## Tool Mappings
 
-**CRITICAL: LSP Tool Prerequisite**
-- **ALWAYS call `claude-code-ide-extras-emacs/find_file(file)` BEFORE using baseline LSP/semantic tools** (xref_find_apropos, getDiagnostics, treesit_info, imenu_list_symbols)
-- Reason: Baseline tools from claude-code-ide.el don't force LSP initialization. If LSP is deferred (lsp-deferred in hooks), these tools fail or return incomplete results until the buffer is displayed to the user
-- Our extras tools (xref_find_references_at_point, xref_find_definitions_at_point, lsp/describe_thing_at_point, lsp/format_buffer) already handle this internally - no find_file needed
+In many circumstances, the built in tools you naturally prefer (Bash/Read/Grep) have now have superior alternatives:
 
-**Use semantic tools when:**
-- Finding symbols → xref_find_apropos (not Grep) [REQUIRES find_file first!]
-- Finding references → xref_find_references_at_point (not Grep or deprecated xref_find_references)
-- Getting type info → lsp_describe_thing_at_point (not reading definitions)
-- Understanding code structure → treesit (not Read full file; imenu broken for C++) [REQUIRES find_file first!]
-- Validating code correctness → getDiagnostics (not compile) [REQUIRES find_file first!]
-- Running builds/tests → projectile tasks (not Bash)
+**Read** has alternatives: `imenu_list_symbols` for structure overview, `buffer_query` for sections from persistent buffers, `lsp_describe_thing_at_point` for types/docs without reading implementation
 
-**Still use traditional tools when:**
-- Searching string literals or comments → Grep
-- Reading implementation details → Read
-- Simple file operations → standard file tools
+**Grep** has alternatives: `xref_find_references_at_point` for actual usage, `xref_find_definitions_at_point` for actual definitions, `xref_find_apropos` for symbol search, `buffer_search` for searching within open buffers
 
-**Key principle**: Semantic understanding via MCP > text manipulation via Bash/Grep
+**Bash** has alternatives: `task_start` for persistent queryable output, `eval_elisp` for querying live Emacs state
 
----
+Use basic tools when structure doesn't matter: text searches, simple operations, throwaway output.
 
-## When to Use Projectile `task_start(task_type="run", ...)` vs Bash
+These aren't formulas - they're showing you what's possible. Find new ways to leverage these tools.
 
-**Use projectile `run` task when:**
-- Command produces output you'll want to query/search/analyze
-- Output might be large (can use `task_search` for specific patterns without retrieving everything)
-- You want to check output size first (`task_wait`) before deciding retrieval strategy
-- You need persistent buffer you can query multiple times in different ways
-- Examples:
-  - `git log`, `git diff --stat` - examine history/changes
-  - `find . -name "*.cpp"` - then search results for specific patterns
-  - Analysis scripts producing structured output
-  - Any command where you'd normally pipe to `grep`, `head`, `tail`
+## Critical Information
 
-**Use Bash directly when:**
-- Simple operations with no meaningful output to examine: `mv`, `cp`, `mkdir`, `touch`
-- Very small, immediate results where buffer infrastructure is overkill
-- Operations where you need side effects, not output analysis
-- Quick one-off commands with trivial output
+- **Always `find_file(path)` before baseline structure tools** (`xref_find_apropos`, `getDiagnostics`, `treesit_info`, `imenu_list_symbols`):
+  - Baseline tools DO NOT cause LSP initialization of the named file (deferred loading)
+  - Tool usage for the above tools will FAIL or BADLY DEGRADE if you do not first load it with the `find_file` tool.
+  - If one of the baseline tools fails or gives poor results, try to recover by running `find_file` on the target file and then re-running the tool, rather than immediately falling back to the built in tools.
+  - Our `claude-code-ide-extras` tools handle this internally: `xref_find_references_at_point`, `xref_find_definitions_at_point`, `lsp_describe_thing_at_point`, `lsp_format_buffer`, etc. But, there is no harm to calling `find_file` before invoking them, if that is easier to keep straight.
 
-**Key principle**: If the output is a valuable artifact you'll want to work with flexibly, use projectile `run`. If it's just immediate throwaway results or side effects, use Bash.
+- **Tasks create persistent buffers:**
+  - `task_start` is non-blocking, output goes to buffer
+  - `task_wait` checks completion and output size
+  - `task_search` / `task_query` work with output without re-running
+  - Use for: builds, tests, git operations, any command with valuable output
 
----
+- **Opened files stay in buffers:**
+  - `find_file` opens once
+  - `buffer_query` / `buffer_search` access repeatedly
+  - No re-reading cost
 
-## Baseline MCP Tools from claude-code-ide
+## Emacs MCP Tool Descriptions
 
-**Semantic Code Navigation:**
+### Built in Emacs MCP Tools from claude-code-ide
+
+**Code Navigation & Structure:**
 
 - **`xref_find_apropos(pattern, file_path)`** - Find symbols matching pattern
   - Pattern-based search across project
@@ -117,6 +87,7 @@ If you find yourself reaching for bash, PAUSE AND THINK: is there an emacs MCP i
   - Use for: Quick overview before reading, navigating large files
   - Faster than Read when you need "what's in this file?"
   - Pair with Read: imenu first to see structure, then read specific sections
+  - This is an extremely powerful tool for researching a codebase in a way that preserves context. Reach for it OFTEN.
 
 - **`treesit_info(file_path, line?, column?, include_ancestors?, include_children?, whole_file?)`** - Get AST structure
   - Returns tree-sitter syntax tree with node types, ranges, hierarchy
@@ -139,5 +110,4 @@ If you find yourself reaching for bash, PAUSE AND THINK: is there an emacs MCP i
 - **`project_info()`** - Get project root, file count, current buffer
   - Quick context about where you're working
 
----
-
+### Additional Emacs MCP Tools from claude-code-ide-extras
