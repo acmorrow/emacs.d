@@ -602,6 +602,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 ;; Programming modes, tree-sitter, LSP
 ;;
 (use-package treesit-auto
+  :pin melpa
   :custom
   (treesit-auto-install 'prompt)
   :config
