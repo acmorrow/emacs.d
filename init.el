@@ -762,8 +762,6 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :bind ("s-c" . claude-code-ide-menu)
   :custom
 
-  (claude-code-ide-cli-extra-flags "--model claude-sonnet-4-5-20250929")
-
   ;; Terminal backend
   ;; (claude-code-ide-terminal-backend 'eat)  ; Commented out - trying vterm instead
   (claude-code-ide-terminal-backend 'vterm)
