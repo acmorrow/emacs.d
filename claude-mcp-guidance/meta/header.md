@@ -68,6 +68,12 @@ These aren't formulas - they're showing you what's possible. Find new ways to le
   - `buffer_query` / `buffer_search` access repeatedly
   - No re-reading cost
 
+- **Buffers can diverge from disk**
+  - Never use your eval tools to call revert-buffer unless explicitly asked to do so by the user. It discards unsaved user edits without recovery. It is never the right response to a file-changed-on-disk situation.
+  - If lsp_format_buffer throws an error indicating that a buffer has unsaved modifications, that is intentional protection — do not attempt to work around it. Report the conflict to the user and stop.
+  - Transient diagnostics firing after the Edit tool writes to disk are expected noise from clangd reinitializing. They are not a signal that the buffer needs to be synced or reverted.
+
+
 ## Emacs MCP Tool Descriptions
 
 ### Built in Emacs MCP Tools from claude-code-ide
