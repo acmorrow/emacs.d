@@ -6,3 +6,4 @@
     - Search scratch buffer for TODOs: `buffer_search("*scratch*", "TODO")`
     - Find errors in messages: `buffer_search("*Messages*", "error:", 2)`
     - Search previous apropos results if buffer wasn't killed
+  - **Example**: You opened `trajectory.hpp` with `find_file` earlier this session and now need specific matching lines - use this instead of Grep'ing the file.

@@ -2,7 +2,7 @@
   - **ALWAYS call this after task_start** before retrieving output
   - Returns "Status: running" while executing
   - Returns "Status: finished\n\nOutput size:\n  Lines: N\n  Characters: M" when done
-  - Poll with backoff until status is "finished"
+  - Poll with bounded doubling backoff until status is "finished": start at 1s, cap at 64 seconds
   - **Use the size info** to decide whether to fetch full output or use head/tail limiting:
     - Small output (<500 lines): fetch full output with `task_query`
     - Large output (>500 lines): use `task_query` with `head_lines` or `tail_lines` to limit

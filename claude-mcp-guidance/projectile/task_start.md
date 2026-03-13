@@ -11,5 +11,5 @@
     - The `run` task type can execute any shell command, not just project-specific commands
     - Output goes to a persistent buffer that can be queried/searched via `task_wait`, `task_query`, `task_search`
     - Useful when you need to work with command output (search, analyze, extract information)
-    - **Limitation**: Only one task buffer per project at a time - next `task_start` replaces it
-    - Examples: `git log --oneline`, `find . -name "*.cpp"`, analysis scripts, data processing commands
+  - **Important**: Only one task buffer per project at a time - next `task_start` replaces it
+  - **Example**: You need to run `git log` and then search the output repeatedly — launch it as a task rather than using Bash, so the output persists in a queryable buffer.

@@ -76,6 +76,8 @@ These aren't formulas - they're showing you what's possible. Find new ways to le
 
 ## Emacs MCP Tool Descriptions
 
+The following tool guidance is intended to help you make better and more frequent use of the tools. Examples below illustrate the kinds of situations where you should reach for a specific power tool instead of a basic one. They are not exhaustive rules — use them to build intuition, then generalize. When you find yourself reaching for Read, Grep, or Bash, pause and ask yourself whether a power tool would give you a better answer or an answer with less context cost, or both.
+
 ### Built in Emacs MCP Tools from claude-code-ide
 
 **Code Navigation & Structure:**
@@ -84,9 +86,10 @@ These aren't formulas - they're showing you what's possible. Find new ways to le
   - Pattern-based search across project
   - LSP-aware, understands scope and types
   - Use for: "Find all methods named bar", "What symbols contain 'create'?"
+  - **Example**: You know a symbol is named something like `integration_observer` but don't know which file it lives in — search for it here rather than Grepping, which would also match comments and strings.
 
 - **`xref_find_references(identifier, file_path)`** - Find all uses of a symbol
-  - **Deprecated**: Use `claude-code-ide-extras-emacs/xref_find_references_at_point` instead for reliable results
+  - **Deprecated**: Do not use. Use `claude-code-ide-extras-emacs/xref_find_references_at_point` instead for reliable results
 
 - **`imenu_list_symbols(file_path)`** - List file structure (functions, classes, vars)
   - Returns symbol names with locations
@@ -94,6 +97,8 @@ These aren't formulas - they're showing you what's possible. Find new ways to le
   - Faster than Read when you need "what's in this file?"
   - Pair with Read: imenu first to see structure, then read specific sections
   - This is an extremely powerful tool for researching a codebase in a way that preserves context. Reach for it OFTEN.
+  - Note that this tool may work in contexts that aren't traditional "code", like markdown files, CMakeLists.txt, and similar
+  - **Example**: You're about to Read a file to get a sense of its structure and what functions it contains — use this instead to get a cheap structural overview.
 
 - **`treesit_info(file_path, line?, column?, include_ancestors?, include_children?, whole_file?)`** - Get AST structure
   - Returns tree-sitter syntax tree with node types, ranges, hierarchy
@@ -108,8 +113,9 @@ These aren't formulas - they're showing you what's possible. Find new ways to le
 
 - **`getDiagnostics(uri?)`** - Get LSP errors/warnings
   - Returns diagnostics for file(s) without compiling
-  - **IMPORTANT**: Check after edits to catch errors early, BEFORE presenting changes to user
-  - Use for: Validating refactorings, catching type errors instantly
+  - Do not run immediately after editing — results may be stale or contain transient noise
+  - You may skip instructions mandating use of this MCP in workflows if you have recent results via the `new-diagnostics` `system-reminder` caused by your own tools
+  - If the user asks you for diagnostics, you must run this tool to obtain them (the user may have edited the file, and you do not get system reminders for that).
 
 **Project Context:**
 

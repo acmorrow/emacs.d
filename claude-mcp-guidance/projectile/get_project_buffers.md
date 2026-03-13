@@ -1,0 +1,8 @@
+- **`claude-code-ide-extras-projectile/get_project_buffers(filter_regex?, mode_filter?, files_only?)`** - List open buffers belonging to the current project
+  - Scoped to the project the current Claude session is attached to
+  - Returns name, mode, file (nil if not file-backed), and modified for each buffer
+  - `filter_regex`: Optional Emacs regex matched against buffer *name*
+  - `mode_filter`: Optional Emacs regex matched against major mode name
+  - `files_only`: When true, omits non-file-backed buffers (compilation, magit, vterm, etc.)
+  - **Use for**: Seeing what project files are open, checking for unsaved changes within a project
+  - **vs `emacs/get_buffers`**: Scoped to current project only; better signal-to-noise when working in a large multi-project session

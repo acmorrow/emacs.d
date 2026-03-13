@@ -1,0 +1,9 @@
+- **`claude-code-ide-extras-emacs/get_buffers(filter_regex?, mode_filter?, files_only?)`** - List all open Emacs buffers
+  - Returns name, mode, file (nil if not file-backed), and modified for each buffer
+  - `filter_regex`: Optional Emacs regex matched against buffer *name* (not file path)
+  - `mode_filter`: Optional Emacs regex matched against major mode name (e.g., `"c++-ts-mode"`)
+  - `files_only`: When true, omits non-file-backed buffers
+  - **Important**: `filter_regex` matches buffer name only — file buffers are named by filename, not project. To find project buffers by path, use `projectile_get_project_buffers` instead.
+  - **Use for**: Global view of all open buffers, finding buffers by mode, checking modified state
+  - **Not for**: Finding a buffer for a specific file path — use `find_file` (returns buffer name) or `projectile_get_project_buffers`
+  - Generally, prefer `projectile_get_project_buffers` to keep scope narrow

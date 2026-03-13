@@ -1,11 +1,13 @@
-- **`claude-code-ide-extras-projectile/get_project_files()`** - Enumerate all project files
-  - No parameters - uses current project from session context
+- **`claude-code-ide-extras-projectile/get_project_files(filter_regex?)`** - Enumerate all project files
+  - Uses current project from session context
   - Returns list of relative paths (relative to project root)
+  - `filter_regex`: Optional Emacs regex matched against the full relative path (e.g., `"\\.cpp$"`, `"^src/"`, `"test"`)
   - **Why use this**: Fast (projectile cache), respects ignore rules (.gitignore, .projectile)
-  - **Use when**: Need complete file inventory, batch operations, project structure discovery
+  - **Use when**: Need complete file inventory, project structure discovery, or just to find the path to particular project files
   - **Better than bash find**: Automatically excludes ignored files, uses cached data
   - **Typical workflows**:
-    - Find all test files → filter list → read specific ones
-    - Discover project structure before implementing features
-    - Batch format/check operations across multiple files
-  - **Not for**: Finding files by content (use search) or by name pattern (use Glob)
+    - Find all test files: `filter_regex="test"` → read specific ones
+    - Scope to a subdirectory: `filter_regex="^src/viam/trajex"`
+    - Batch format/check operations: filter to file type, then iterate
+  - **Not for**: Finding files by content (use Search) or by name pattern (use Glob)
+  - **Example**: You want all `.cpp` files under `src/viam/trajex/` — use this rather than Glob; it's faster, uses projectile's cache, and automatically excludes ignored files.

@@ -7,3 +7,4 @@
   - **Typical workflow**: imenu shows functions → pick one → find all usages to understand impact
   - **Critical for**: Refactoring (see all affected sites), understanding code flow, impact analysis
   - **Not for**: Finding definitions (use xref_find_definitions_at_point)
+  - **Example**: You're changing a function signature and need all call sites — use this rather than Grep, which would over-match on comments, strings, and unrelated overloads.

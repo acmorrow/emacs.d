@@ -5,4 +5,5 @@
   - **IMPORTANT**: Column must be positioned on an identifier (variable, type, function name)
   - **IMPORTANT**: Works at definitions, but apparently not on pure declarations.
   - Whitespace, operators, and punctuation will return "No hover information"
-  - **Example**: Understanding unfamiliar code without reading full definitions
+  - **Example**: Understanding unfamiliar code without reading full definitions.
+  - **Example**: You encounter `integration_observer` in some code and want to know its signature — position on it and call this rather than hunting down and reading the header it's declared in.

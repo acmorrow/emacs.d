@@ -1,0 +1,4 @@
+- **`claude-code-ide-extras-emacs/get_point_position(buffer_name)`** - Get current point position in a buffer
+  - Returns `((line . N) (column . M))` — line 1-based, column 0-based
+  - **Use for**: Knowing where the user's cursor is before performing a context-sensitive operation
+  - **Pairs with**: `position_point` (to save/restore) or other MCPs which operate point-wise

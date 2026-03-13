@@ -9,3 +9,4 @@
     - Check message log: `buffer_query("*Messages*", -50, 50)` (last 50 lines)
     - Pagination: `buffer_query("*compilation*", 101, 100)` (next 100 lines)
   - **Note**: Can read any buffer, not just compilation - enables scratch buffer collaboration
+  - **Example**: You opened `trajectory.hpp` with `find_file` earlier this session and now need to read a specific section - use this instead of Read'ing the file again.

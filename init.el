@@ -824,6 +824,8 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
    (my/load-mcp-guidance "projectile/get_project_buffer_local_keys.md"))
   (claude-code-ide-extras-projectile-get-project-buffer-local-variables-usage-prompt
    (my/load-mcp-guidance "projectile/get_project_buffer_local_variables.md"))
+  (claude-code-ide-extras-projectile-get-project-buffers-usage-prompt
+   (my/load-mcp-guidance "projectile/get_project_buffers.md"))
 
   ;; LSP tool customizations
   (claude-code-ide-extras-lsp-format-buffer-usage-prompt
@@ -832,6 +834,8 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
    (my/load-mcp-guidance "lsp/describe_thing_at_point.md"))
 
   ;; Emacs tool customizations
+  (claude-code-ide-extras-emacs-get-buffers-usage-prompt
+   (my/load-mcp-guidance "emacs/get_buffers.md"))
   (claude-code-ide-extras-emacs-describe-usage-prompt
    (my/load-mcp-guidance "emacs/describe.md"))
   (claude-code-ide-extras-emacs-apropos-usage-prompt
@@ -858,6 +862,8 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
    (my/load-mcp-guidance "emacs/eval_defun_at_point.md"))
   (claude-code-ide-extras-emacs-find-file-usage-prompt
    (my/load-mcp-guidance "emacs/find_file.md"))
+  (claude-code-ide-extras-emacs-get-point-position-usage-prompt
+   (my/load-mcp-guidance "emacs/get_point_position.md"))
   (claude-code-ide-extras-emacs-position-point-usage-prompt
    (my/load-mcp-guidance "emacs/position_point.md"))
   (claude-code-ide-extras-emacs-select-region-usage-prompt

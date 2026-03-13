@@ -6,3 +6,4 @@
   - **Use when**: Reading code, encounter symbol usage, want to see its declaration/definition
   - **Typical workflow**: Read file → see `foo.bar()` → find definition to understand what `bar` does
   - **Not for**: Pattern searches across project (use xref_find_apropos instead)
+  - **Example**: You see `trajectory::create()` called in some code and want to see its declaration — position on it and call this rather than Grepping for the function name across the project.

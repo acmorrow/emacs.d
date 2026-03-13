@@ -1,4 +1,4 @@
-- **`claude-code-ide-extras-emacs/find_file(file_path)`** - Open file into buffer without displaying
+- **`claude-code-ide-extras-emacs/find_file(file_path)`** - Open file into buffer without displaying; returns buffer name
   - **Enables**: buffer_query, buffer_search, imenu, LSP operations on that file
   - Reuses existing buffer if already open
   - **Use cases**:
@@ -6,4 +6,5 @@
     - Open files to search/query their contents
     - Batch open directory files for analysis
     - Load file to get imenu structure or run buffer operations
+    - Resolve a file path to its buffer name (use the return value)
   - Triggers full file-visiting: major mode, hooks, LSP attachment
