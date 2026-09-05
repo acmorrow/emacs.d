@@ -16,6 +16,7 @@
 (defvar no-littering-etc-directory (expand-file-name ".cache/etc/" user-emacs-directory))
 (defvar no-littering-var-directory (expand-file-name ".cache/var/" user-emacs-directory))
 (setq package-user-dir (expand-file-name "elpa/" no-littering-var-directory))
+(setq package-native-compile t)
 
 ;;
 ;; Top-level configuration for `package`, `use-package`, and `auto-compile`
