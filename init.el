@@ -373,11 +373,11 @@
   (add-hook 'completion-at-point-functions #'cape-file)
   (add-hook 'completion-at-point-functions #'cape-history)
   (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  (add-hook 'completion-at-point-functions #'yasnippet-capf)
   (add-hook 'prog-mode-hook
             (lambda ()
               (add-hook 'completion-at-point-functions
                         #'cape-keyword nil t))))
-
 
 ;;
 ;; Load magit, projectile, fly[check,spell], compile, etc. as key programming configs.
@@ -892,6 +892,12 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :pin melpa
   :after (consult yasnippet))
 
+(use-package yasnippet-capf
+  :pin melpa
+  :ensure t
+  :after cape
+  :config
+  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 ;;
 ;; Other configuration
