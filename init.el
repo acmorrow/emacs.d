@@ -268,7 +268,7 @@
   (consult-dir-project-list-function 'consult-dir-projectile-dirs)
   :init
   (defun my/consult-dir--tramp-container-hosts ()
-      (cl-loop for (id name) in (tramp-container--completion-function tramp-docker-program)
+      (cl-loop for (_id name) in (tramp-container--completion-function tramp-docker-program)
            collect (format "/docker:%s" name)))
 
   (defvar my/consult-dir--source-tramp-container
@@ -473,7 +473,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 `switch-to-buffer' commands are also supported."
     (interactive)
     (display-buffer-override-next-command
-     (lambda (buffer _)
+     (lambda (_buffer _)
        (let (window type)
          (setq
           window (aw-select (propertize " ACE" 'face 'mode-line-highlight))
