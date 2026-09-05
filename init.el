@@ -704,8 +704,9 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 
 (use-package gptel
   :pin melpa
+  :custom
+  (gptel-model 'claude-opus-5)
   :config
-  (setq gptel-model 'claude-sonnet-4-5-20250929)
   (defun my/get-anthropic-api-key ()
     "Retrieve Anthropic API key from auth-source (1Password)."
     (let ((key (auth-source-pick-first-password
