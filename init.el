@@ -718,21 +718,18 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
                          :key (my/get-anthropic-api-key))))
 
 
-;; Prereq for claude-code-ide
-(use-package eat
-  :vc (:url "https://codeberg.org/akib/emacs-eat" :rev :newest)
-  :demand
-  :bind (:map eat-semi-char-mode-map
-              ;; Unbind M-` so it falls through to global binding (ns-next-frame)
-              ("M-`" . nil)))
-
-;; vterm - alternative terminal backend for claude-code-ide
-(use-package vterm
+;; Terminal backend for claude-code-ide
+(use-package ghostel
   :ensure t
-  :pin melpa
-  :bind (:map vterm-mode-map
-              ;; Unbind M-` so it falls through to global binding (ns-next-frame)
-              ("M-`" . nil)))
+  :custom
+  ;; macOS cycles an app's windows with Command-`, which `mac-command-modifier'
+  ;; delivers as M-`. Ghostel forwards the whole M-<printable> range to the
+  ;; terminal, so a frame running a Claude session would swallow the keystroke
+  ;; and cycling would stall there. Excepting the pair lets them reach the
+  ;; global `ns-next-frame'/`ns-prev-frame' bindings instead. The first seven
+  ;; entries are Ghostel's defaults, which an exception list must restate.
+  (ghostel-keymap-exceptions '("C-c" "C-x" "C-u" "C-h" "M-x" "M-:" "C-\\"
+                               "M-`" "M-~")))
 
 (use-package claude-code-ide
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
@@ -740,9 +737,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :bind ("s-c" . claude-code-ide-menu)
   :custom
 
-  ;; Terminal backend
-  ;; (claude-code-ide-terminal-backend 'eat)  ; Commented out - trying vterm instead
-  (claude-code-ide-terminal-backend 'vterm)
+  (claude-code-ide-terminal-backend 'ghostel)
 
   ;; Window configuration
   (claude-code-ide-use-side-window nil)
