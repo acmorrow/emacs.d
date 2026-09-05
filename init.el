@@ -78,6 +78,9 @@
   ;; Bell-ring is annoying
   (ring-bell-function 'ignore)
 
+  ;; Don't require typing out `yes` or `no`; accept `y` or `n`.
+  (use-short-answers t)
+
   ;; Always add a trailing newline to files
   (require-final-newline t)
 
@@ -117,9 +120,6 @@
 
   ;; We want this for magit
   (global-unset-key (kbd "s-m"))
-
-  ;; Don't require typing out `yes` or `no`; accept `y` or `n`.
-  (use-short-answers t)
 
   ;; Always start the initial frame large
   (add-to-list 'initial-frame-alist '(fullscreen . maximized))
