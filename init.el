@@ -751,6 +751,8 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (claude-code-ide-debug-mode nil)
   (claude-code-ide-chat-auto-scroll t)
 
+  (claude-code-ide-prevent-reflow-glitch nil)
+
   :config
   (setenv "ANTHROPIC_API_KEY" (my/get-anthropic-api-key))
 
