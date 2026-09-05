@@ -117,7 +117,7 @@
   (global-unset-key (kbd "s-m"))
 
   ;; Don't require typing out `yes` or `no`; accept `y` or `n`.
-  (fset 'yes-or-no-p 'y-or-n-p)
+  (use-short-answers t)
 
   ;; Always start the initial frame large
   (add-to-list 'initial-frame-alist '(fullscreen . maximized))
