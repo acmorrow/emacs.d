@@ -649,6 +649,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 
 (use-package lsp-mode
   :pin melpa
+  :ensure t
   :custom
   (lsp-keymap-prefix "s-l")
   (lsp-completion-provider :none) ;; Corfu!
@@ -667,27 +668,17 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (lsp-rust-analyzer-display-closure-return-type-hints t)
   (lsp-rust-analyzer-display-parameter-hints nil)
   (lsp-rust-analyzer-display-reborrow-hints nil)
+  (lsp-warn-no-matched-clients nil)
+  (lsp-enable-suggest-server-download nil)
   :init
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(orderless))) ;; Configure orderless
   :hook ((lsp-mode . lsp-enable-which-key-integration)
          (lsp-completion-mode . my/lsp-mode-setup-completion)
-         (c++-mode . lsp-deferred)
-         (c++-ts-mode . lsp-deferred)
-         (c-mode . lsp-deferred)
-         (c-or-c++-mode . lsp-deferred)
-         (c-or-c++-ts-mode . lsp-deferred)
-         (c-ts-mode . lsp-deferred)
-         (cmake-mode . lsp-deferred)
-         (cmake-ts-mode . lsp-deferred)
-         (go-mode . lsp-deferred)
-         (go-ts-mode . lsp-deferred)
-         (python-mode . lsp-deferred)
-         (python-ts-mode . lsp-deferred)
-         (rust-mode . lsp-deferred)
-         (rust-ts-mode . lsp-deferred)
-         (typescript-ts-mode . lsp-deferred))
+         (prog-mode . (lambda ()
+                       (unless (derived-mode-p 'emacs-lisp-mode)
+                         (lsp-deferred)))))
   :commands (lsp lsp-deferred))
 
 (use-package lsp-ui
