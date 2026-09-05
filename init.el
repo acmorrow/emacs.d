@@ -1,7 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
 ;; TODO: dir-locals - not in this file somehow
-;; TODO: treesit directory no-littering
 ;; TODO: dap mode for C++ and Rust
 ;; TODO: flyspell correct integration via corfu, don't overwrite C-. anywhere conflicts with embark.
 ;; TODO: activities or burly?
