@@ -334,6 +334,7 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package which-key
+  :ensure nil  ;; built in since Emacs 30
   :diminish
   :config
   (which-key-mode +1))
@@ -606,30 +607,15 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
 ;;
 ;; Programming modes, tree-sitter, LSP
 ;;
-(use-package treesit-auto
-  :pin melpa
+(use-package treesit
+  :ensure nil
   :custom
-  (treesit-auto-install 'prompt)
-  :config
-  ;; https://www.reddit.com/r/emacs/comments/1ewrjrm/help_get_proper_syntax_highlight_on_ctsmode/
-  (add-to-list 'treesit-auto-recipe-list
-               (make-treesit-auto-recipe
-                :lang 'rust
-                :ts-mode 'rust-ts-mode
-                :remap 'rust-mode
-                :url "https://github.com/tree-sitter/tree-sitter-rust"
-                :revision "v0.23.3"
-                :ext "\\.rs\\'"))
-  ;; https://github.com/renzmann/treesit-auto/issues/76
-  (setq major-mode-remap-alist
-        (treesit-auto--build-major-mode-remap-alist))
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
-
-(use-package cmake-mode
-  :ensure t
-  :mode (("CMakeLists\\.txt\\'" . cmake-mode)
-         ("\\.cmake\\'" . cmake-mode)))
+  ;; Drives `major-mode-remap-alist' from the built-in
+  ;; `treesit-major-mode-remap-alist', so every language with a tree-sitter mode
+  ;; gets one. Grammar install policy is deliberately not set here: no-littering
+  ;; pins `treesit-auto-install-grammar' to `ask-dir' to keep new grammars out
+  ;; of `user-emacs-directory' (debbugs #79862), and setting it would undo that.
+  (treesit-enabled-modes t))
 
 (use-package rust-mode
   :demand
@@ -716,10 +702,6 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :after lsp-mode
   :commands consult-lsp-symbols
   :init (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
-
-(use-package auth-source
-  :pin melpa
-  :ensure t)
 
 (use-package auth-source-1password
   :pin melpa
