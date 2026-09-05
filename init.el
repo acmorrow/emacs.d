@@ -394,13 +394,21 @@
          ("s-m b" . magit-blame)))
 
 (use-package projectile
+  :preface
+  (defun my/projectile-vc-then-find-file ()
+    "Switch-project action: open the project's VC buffer, then visit a file.
+Gives the magit landing of `projectile-vc' followed by the file
+prompt of the default `projectile-find-file' action.  Aborting the
+prompt with \\[keyboard-quit] simply leaves you in the VC buffer."
+    (projectile-vc)
+    (projectile-find-file))
   :init
   (projectile-mode +1)
   :bind (:map projectile-mode-map
               ("s-p" . projectile-command-map))
   :custom
   (projectile-per-project-compilation-buffer t)
-  (projectile-switch-project-action 'projectile-vc)
+  (projectile-switch-project-action 'my/projectile-vc-then-find-file)
   (compilation-save-buffers-predicate
    (lambda ()
      (and (buffer-file-name)
