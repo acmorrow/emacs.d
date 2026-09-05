@@ -1,6 +1,6 @@
 # Emacs MCP Tool Usage Guidance
 
-The following guidance is intended to help you (claude) better understand powerful new capabilities granted to you via custom emacs specific MCPs. The goal here is not to tell you how to use these MCPs, but to tell you how to think about them, such that you can derive your own correct understanding and thereby utilize them to their fullest.
+The following tool philosophy and descriptions are intended to help you (claude) better understand powerful new capabilities granted to you via custom emacs specific MCPs. The goal here is not to tell you how to use these MCPs, but to tell you how to think about them, such that you can derive your own correct understanding and thereby utilize them to their fullest. What follows is not soft guidance or advisory/informational content: use of these tools is mandatory at all times except when there is a genuine specific identifiable reason they are not applicable. Use the Emacs MCPs!
 
 ## Philosophy
 
@@ -8,17 +8,15 @@ The following guidance is intended to help you (claude) better understand powerf
 
 You have access to Emacs-powered MCP tools that integrate deeply with the user's development environment - LSP servers, tree-sitter parsers, project build systems, the live Emacs session itself. These aren't just wrappers around text files - they understand code structure, types, relationships, and execution context.
 
-**These tools preserve your context budget.** Structure queries cost a fraction of reading entire files. Buffers persist - open once, access repeatedly. Build output stays queryable without re-running. You're working with limited context; these tools are designed for that reality.
+**These tools preserve your context budget.** - Structure queries cost a fraction of reading entire files. Buffers persist - open once, access repeatedly. Build output stays queryable without re-running. You're working with limited context; these tools are designed for that reality.
 
-**Your training data biases you heavily toward the basic tools.** Read, Grep, Bash - these patterns are deeply embedded. Resist that bias. The capabilities described here are more powerful and appropriate for this environment. Free yourself to use them.
+**Your training data biases you heavily toward the basic tools.** - Read, Grep, Bash - these patterns are deeply embedded. Resist that bias. The capabilities described here are more powerful and appropriate for this environment. Free yourself to use them.
 
-**Before defaulting to your standard tools, ask: is there a power tool here that does this better?**
+**Before using one of your built-in tools, evaluate whether there is a power tool described here that should be used instead** - The power tools often give you richer results with less work. They understand what you're looking at, not just the text. They can navigate relationships, validate correctness, query structured output, execute in context.
 
-The power tools often give you richer results with less work. They understand what you're looking at, not just the text. They can navigate relationships, validate correctness, query structured output, execute in context.
+**Limit use of built-in tools to ephemeral and non-semantic tasks, or where the power tools are definitely inapplicable** - Using such tools should be the exception, and you must have a justification available if demanded.
 
-**Quick text operations are fine** - sometimes you just need to grep for a string or read a snippet. But know that you have sophisticated capabilities available. When you're exploring code, understanding structure, or need capabilities beyond text manipulation - there's probably a better tool here.
-
-**If you try a power tool and it doesn't work:** Tell the user what you tried and why you're doing something else. This feedback helps us improve the integration.
+**If you try a power tool and it doesn't work:** You must explain what you tried, what went wrong, and why you are doing something else. This feedback helps improve the power tools.
 
 ## You're Working in an IDE Environment
 
@@ -45,11 +43,17 @@ In many circumstances, the built in tools you naturally prefer (Bash/Read/Grep) 
 
 **Bash** has alternatives: `task_start` for persistent queryable output, `eval_elisp` for querying live Emacs state
 
-Use basic tools when structure doesn't matter: text searches, simple operations, throwaway output.
+You should fall back to the basic tools only when structure doesn't matter: one-shot text searches never to be repeated, throwaway output where you just need an exit status, etc.
 
-These aren't formulas - they're showing you what's possible. Find new ways to leverage these tools.
+Example usages aren't formulas or boundaries - they're showing you what's possible. Find  new ways to leverage these tools and make use of them broadly.
 
 ## Critical Information
+
+- **Always ToolSearch**
+  - For every power tool described in this document, immediately run `ToolSearch` on it to ensure that the tool is available.
+  - Running `ToolSearch` will ensure that the schema for the power tool is loaded. This helps you understand the tools and reach for them preferentially.
+  - Do not attempt to optimize by selecting only some "useful subset". Again: load ALL the tools mentioned in this document.
+  - Do not attempt to lazy load by deferring ToolSearch until first use. You must ToolSearch ALL the tools mentioned in these instructions immediately.
 
 - **Always `find_file(path)` before baseline structure tools** (`xref_find_apropos`, `getDiagnostics`, `treesit_info`, `imenu_list_symbols`):
   - Baseline tools DO NOT cause LSP initialization of the named file (deferred loading)
@@ -76,7 +80,7 @@ These aren't formulas - they're showing you what's possible. Find new ways to le
 
 ## Emacs MCP Tool Descriptions
 
-The following tool guidance is intended to help you make better and more frequent use of the tools. Examples below illustrate the kinds of situations where you should reach for a specific power tool instead of a basic one. They are not exhaustive rules — use them to build intuition, then generalize. When you find yourself reaching for Read, Grep, or Bash, pause and ask yourself whether a power tool would give you a better answer or an answer with less context cost, or both.
+The following tool guidance is intended to help you make better and more frequent use of the tools. Examples below illustrate the kinds of situations where you should reach for a specific power tool instead of a basic one. They are not exhaustive rules — use them to build intuition, then generalize. When you find yourself reaching for Read, Grep, or Bash, pause and ask yourself whether a power tool would give you a better answer or an answer with less context cost, or both. If so, use the MCP tool!
 
 ### Built in Emacs MCP Tools from claude-code-ide
 
