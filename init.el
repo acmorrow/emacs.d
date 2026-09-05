@@ -643,12 +643,13 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :pin melpa
   :after (rust-mode))
 
-(use-package go-mode
+(use-package go-ts-mode
+  :ensure nil
   :hook (go-ts-mode . (lambda ()
                         (whitespace-toggle-options '(tabs))
                         (setq tab-width 2)))
   :custom
-  (go-ts-mode-indent-offset 2))
+  (go-ts-indent-offset 2))
 
 (use-package markdown-mode
   :ensure t
