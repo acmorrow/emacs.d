@@ -407,7 +407,7 @@ prompt with \\[keyboard-quit] simply leaves you in the VC buffer."
   :bind (:map projectile-mode-map
               ("s-p" . projectile-command-map))
   :custom
-  (projectile-per-project-compilation-buffer t)
+  (projectile-compilation-buffer-scope '(project command))
   (projectile-switch-project-action 'my/projectile-vc-then-find-file)
   (compilation-save-buffers-predicate
    (lambda ()
