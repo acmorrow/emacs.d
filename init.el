@@ -64,8 +64,10 @@
   (mac-command-modifier 'meta)
   (mac-option-modifier 'super)
 
-  ;; Sideline custom.el per no-littering
-  (custom-file (no-littering-expand-etc-file-name "custom.el"))
+  ;; Keep custom.el next to init.el, under version control, so whatever the
+  ;; Custom machinery decides to persist is visible in the repo rather than
+  ;; buried in the no-littering cache.
+  (custom-file (expand-file-name "custom.el" user-emacs-directory))
 
   ;; No need for the startup screen
   (inhibit-startup-screen t)
