@@ -355,8 +355,7 @@
         ("<escape>" . corfu-reset)
         ("C-g" . corfu-quit)
         ("s-SPC" . corfu-insert-separator)
-        ("C-p" . corfu-previous)
-        ))
+        ("C-p" . corfu-previous)))
 
 (use-package dabbrev
   :config
@@ -414,8 +413,7 @@
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package consult-flycheck
-  :after (consult)
-)
+  :after (consult))
 
 (use-package flyspell
   :diminish
@@ -500,8 +498,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :custom
   (switch-to-buffer-obey-display-actions t)
   (aw-dispatch-always t)
-  (ace-window-display-mode t)
-  )
+  (ace-window-display-mode t))
 
 (use-package windmove
   :config
@@ -583,8 +580,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   :ensure nil
   :custom
   ;; Allow editing perms bits in wdired
-  (wdired-allow-to-change-permissions t)
-)
+  (wdired-allow-to-change-permissions t))
 
 (use-package atomic-chrome
   :demand t
@@ -782,9 +778,7 @@ buffer. When `switch-to-buffer-obey-display-actions' is non-nil,
   (setenv "ANTHROPIC_API_KEY" (my/get-anthropic-api-key))
 
   ;; Enable Emacs MCP tools for deep integration
-  (claude-code-ide-emacs-tools-setup)
-)
-
+  (claude-code-ide-emacs-tools-setup))
 
 ;; Helper function to load MCP tool guidance from markdown files
 (defun my/load-mcp-guidance (filename)
